@@ -4,1383 +4,840 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kairos Intelligence — Decision Intelligence Platform for Pharma</title>
-  <meta name="description" content="The AI operating system for pharma's highest-stakes decisions. Built for innovative and generic pharmaceutical companies." />
+  <meta name="description" content="The AI operating system for pharma's highest-stakes decisions. Separate platforms for innovative and generic pharmaceutical companies." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg: #050508;
-      --bg-1: #0a0a10;
-      --bg-2: #0f0f18;
-      --bg-card: #111120;
-      --bg-card-hover: #161628;
+      --bg-1: #09090f;
+      --bg-2: #0e0e18;
+      --bg-card: #0f0f1c;
+      --bg-card-h: #14142a;
       --border: rgba(255,255,255,0.07);
-      --border-bright: rgba(255,255,255,0.12);
-      --accent: #4f8ef7;
-      --accent-2: #7c5cff;
-      --accent-teal: #00d4aa;
-      --accent-amber: #f59e0b;
-      --text: #f0f0f8;
-      --text-2: #a0a0c0;
-      --text-3: #606080;
+      --border-b: rgba(255,255,255,0.13);
+      --blue: #4f8ef7;
+      --blue-2: #7c5cff;
+      --teal: #00d4aa;
+      --amber: #f59e0b;
       --red: #ef4444;
       --green: #22c55e;
+      --text: #eeeef8;
+      --text-2: #9090b8;
+      --text-3: #50507a;
     }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar { width: 4px; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 3px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 2px; }
 
-    /* ── NAV ── */
+    /* NAV */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 48px; height: 64px;
-      background: rgba(5,5,8,0.85);
-      backdrop-filter: blur(16px);
+      padding: 0 52px; height: 62px;
+      background: rgba(5,5,8,0.88); backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
     }
-    .nav-logo {
-      display: flex; align-items: center; gap: 10px;
-      font-weight: 700; font-size: 18px; letter-spacing: -0.5px;
-      text-decoration: none; color: var(--text);
-    }
-    .nav-logo-mark {
-      width: 28px; height: 28px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 800; color: #fff;
-    }
-    .nav-links { display: flex; align-items: center; gap: 32px; }
-    .nav-links a {
-      color: var(--text-2); font-size: 14px; font-weight: 500;
-      text-decoration: none; transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--text); }
-    .nav-cta {
-      background: var(--accent); color: #fff;
-      padding: 8px 20px; border-radius: 6px;
-      font-size: 13px; font-weight: 600;
-      text-decoration: none; transition: opacity 0.2s;
-    }
-    .nav-cta:hover { opacity: 0.85; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-weight: 800; font-size: 17px; letter-spacing: -0.4px; }
+    .logo-mark { width: 30px; height: 30px; background: linear-gradient(135deg, var(--blue), var(--blue-2)); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 900; color: #fff; }
+    .nav-links { display: flex; align-items: center; gap: 0; }
+    .nav-links a { color: var(--text-2); font-size: 13.5px; font-weight: 500; text-decoration: none; padding: 6px 16px; border-radius: 6px; transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .nav-links .nav-sep { color: var(--text-3); padding: 0 4px; font-size: 12px; }
+    .nav-pill { background: rgba(79,142,247,0.12); color: var(--blue) !important; border: 1px solid rgba(79,142,247,0.2); font-size: 12px !important; padding: 4px 12px !important; border-radius: 100px !important; font-weight: 600 !important; }
+    .nav-cta { background: var(--blue); color: #fff; padding: 8px 20px; border-radius: 7px; font-size: 13px; font-weight: 600; text-decoration: none; transition: opacity .2s, transform .2s; margin-left: 12px; }
+    .nav-cta:hover { opacity: .85; transform: translateY(-1px); }
 
-    /* ── CANVAS GRID BACKGROUND ── */
-    #grid-canvas {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none; z-index: 0;
-      opacity: 0.25;
-    }
+    /* CANVAS */
+    #gc { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: .2; }
 
-    /* ── SECTIONS ── */
+    /* UTILS */
     section { position: relative; z-index: 1; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+    .sec { padding: 108px 0; }
+    .lbl { font-size: 11.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 14px; }
+    .lbl-teal { color: var(--teal); }
+    .lbl-amber { color: var(--amber); }
+    .h2 { font-size: clamp(34px, 4.5vw, 56px); font-weight: 900; letter-spacing: -2px; line-height: 1.05; margin-bottom: 18px; }
+    .sub { font-size: 17px; color: var(--text-2); line-height: 1.65; max-width: 580px; }
+    .hdr { margin-bottom: 64px; }
+    .grad-blue { background: linear-gradient(135deg, var(--blue), var(--blue-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .grad-teal { background: linear-gradient(135deg, var(--teal), #00a8ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .btn-p { background: var(--blue); color: #fff; padding: 13px 30px; border-radius: 8px; font-size: 14.5px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; transition: transform .2s, box-shadow .2s; box-shadow: 0 0 36px rgba(79,142,247,.3); display: inline-block; }
+    .btn-p:hover { transform: translateY(-2px); box-shadow: 0 8px 36px rgba(79,142,247,.42); }
+    .btn-teal { background: rgba(0,212,170,.12); color: var(--teal); border: 1px solid rgba(0,212,170,.25); padding: 13px 30px; border-radius: 8px; font-size: 14.5px; font-weight: 600; text-decoration: none; transition: background .2s; display: inline-block; }
+    .btn-teal:hover { background: rgba(0,212,170,.2); }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border-b); padding: 13px 30px; border-radius: 8px; font-size: 14.5px; font-weight: 600; text-decoration: none; transition: background .2s; display: inline-block; }
+    .btn-ghost:hover { background: rgba(255,255,255,.04); }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.vis { opacity: 1; transform: none; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
 
     /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center;
-      padding: 120px 24px 80px;
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(79,142,247,0.1);
-      border: 1px solid rgba(79,142,247,0.25);
-      border-radius: 100px;
-      padding: 6px 16px;
-      font-size: 12px; font-weight: 600;
-      color: var(--accent); letter-spacing: 0.5px;
-      text-transform: uppercase;
-      margin-bottom: 32px;
-    }
-    .hero-badge-dot {
-      width: 6px; height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
-    }
-    .hero h1 {
-      font-size: clamp(42px, 7vw, 88px);
-      font-weight: 900;
-      line-height: 1.0;
-      letter-spacing: -3px;
-      max-width: 900px;
-      margin-bottom: 24px;
-    }
-    .hero h1 .gradient-text {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero-sub {
-      font-size: clamp(17px, 2vw, 21px);
-      color: var(--text-2); font-weight: 400;
-      max-width: 640px; line-height: 1.6;
-      margin-bottom: 48px;
-    }
-    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-    .btn-primary {
-      background: var(--accent); color: #fff;
-      padding: 14px 32px; border-radius: 8px;
-      font-size: 15px; font-weight: 600;
-      text-decoration: none; border: none; cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 40px rgba(79,142,247,0.3);
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(79,142,247,0.4); }
-    .btn-ghost {
-      background: transparent; color: var(--text);
-      padding: 14px 32px; border-radius: 8px;
-      font-size: 15px; font-weight: 600;
-      text-decoration: none; border: 1px solid var(--border-bright);
-      cursor: pointer; transition: border-color 0.2s, background 0.2s;
-    }
-    .btn-ghost:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.2); }
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 28px 80px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(79,142,247,.1); border: 1px solid rgba(79,142,247,.22); border-radius: 100px; padding: 6px 18px; font-size: 12px; font-weight: 700; color: var(--blue); letter-spacing: .8px; text-transform: uppercase; margin-bottom: 36px; }
+    .badge-dot { width: 6px; height: 6px; background: var(--blue); border-radius: 50%; animation: pulse 2s infinite; }
+    .hero h1 { font-size: clamp(46px, 7.5vw, 92px); font-weight: 900; letter-spacing: -3.5px; line-height: .98; max-width: 860px; margin-bottom: 28px; }
+    .hero-sub { font-size: clamp(16px, 2vw, 20px); color: var(--text-2); max-width: 600px; line-height: 1.65; margin-bottom: 52px; }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .hero-stats { display: flex; gap: 52px; margin-top: 84px; padding-top: 52px; border-top: 1px solid var(--border); flex-wrap: wrap; justify-content: center; }
+    .hs { text-align: center; }
+    .hs-num { font-size: 38px; font-weight: 900; letter-spacing: -1.5px; }
+    .hs-num span { color: var(--blue); }
+    .hs-lbl { font-size: 12.5px; color: var(--text-3); margin-top: 5px; }
 
-    .hero-metrics {
-      display: flex; gap: 48px; margin-top: 80px;
-      flex-wrap: wrap; justify-content: center;
-      padding-top: 48px;
-      border-top: 1px solid var(--border);
-    }
-    .hero-metric { text-align: center; }
-    .hero-metric-num {
-      font-size: 36px; font-weight: 800; letter-spacing: -1px;
-      color: var(--text);
-    }
-    .hero-metric-num span { color: var(--accent); }
-    .hero-metric-label { font-size: 13px; color: var(--text-3); margin-top: 4px; }
+    /* ── SPLIT INTRO ── */
+    .split-intro { background: var(--bg-1); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .split-intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+    .si-card { background: var(--bg-1); padding: 56px 52px; cursor: pointer; transition: background .25s; text-decoration: none; color: inherit; display: block; }
+    .si-card:hover { background: var(--bg-card); }
+    .si-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 24px; }
+    .tag-blue { background: rgba(79,142,247,.12); color: var(--blue); border: 1px solid rgba(79,142,247,.2); }
+    .tag-teal { background: rgba(0,212,170,.12); color: var(--teal); border: 1px solid rgba(0,212,170,.2); }
+    .si-title { font-size: 26px; font-weight: 800; letter-spacing: -.5px; margin-bottom: 12px; }
+    .si-sub { font-size: 14.5px; color: var(--text-2); line-height: 1.65; margin-bottom: 28px; }
+    .si-arrow { font-size: 22px; color: var(--blue); transition: transform .2s; display: inline-block; }
+    .si-card:hover .si-arrow { transform: translateX(5px); }
+    .si-card:nth-child(2) .si-arrow { color: var(--teal); }
+    .si-bullets { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .si-bullet { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--text-2); }
+    .si-bullet::before { content: '→'; color: var(--blue); font-weight: 700; flex-shrink: 0; }
+    .si-card:nth-child(2) .si-bullet::before { color: var(--teal); }
 
-    /* ── SECTION COMMON ── */
-    .section-wrapper {
-      max-width: 1160px; margin: 0 auto;
-      padding: 100px 24px;
-    }
-    .section-label {
-      font-size: 12px; font-weight: 700; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--accent);
-      margin-bottom: 16px;
-    }
-    .section-title {
-      font-size: clamp(32px, 4vw, 52px);
-      font-weight: 800; letter-spacing: -1.5px;
-      line-height: 1.1; margin-bottom: 16px;
-    }
-    .section-subtitle {
-      font-size: 18px; color: var(--text-2);
-      max-width: 600px; line-height: 1.6;
-    }
-    .section-header { margin-bottom: 64px; }
+    /* ── SECTION DIVIDER ── */
+    .sec-divider { height: 1px; background: var(--border); }
+    .sec-dark { background: var(--bg-1); border-top: 1px solid var(--border); }
 
-    /* ── POSITIONING STRIP ── */
-    .positioning-strip {
-      background: var(--bg-1);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .positioning-items {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1px; background: var(--border);
-    }
-    .positioning-item {
-      background: var(--bg-1);
-      padding: 40px 36px;
-      transition: background 0.2s;
-    }
-    .positioning-item:hover { background: var(--bg-card); }
-    .pos-icon {
-      width: 40px; height: 40px;
-      background: linear-gradient(135deg, rgba(79,142,247,0.15), rgba(124,92,255,0.15));
-      border: 1px solid rgba(79,142,247,0.2);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; margin-bottom: 20px;
-    }
-    .pos-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-    .pos-desc { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+    /* ── MODULE GRID ── */
+    .mod-grid-blue { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(79,142,247,.08); border: 1px solid rgba(79,142,247,.1); border-radius: 16px; overflow: hidden; }
+    .mod-grid-teal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(0,212,170,.08); border: 1px solid rgba(0,212,170,.1); border-radius: 16px; overflow: hidden; }
+    .mod-cell { background: var(--bg-card); padding: 28px 26px; transition: background .2s; }
+    .mod-cell:hover { background: var(--bg-card-h); }
+    .mod-n { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--text-3); margin-bottom: 10px; letter-spacing: .5px; }
+    .mod-t { font-size: 14.5px; font-weight: 700; margin-bottom: 7px; }
+    .mod-d { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+    .mod-badge { margin-top: 12px; display: inline-block; font-size: 10.5px; font-weight: 600; padding: 3px 9px; border-radius: 100px; }
+    .mb-blue { background: rgba(79,142,247,.1); color: var(--blue); }
+    .mb-teal { background: rgba(0,212,170,.1); color: var(--teal); }
+    .mb-purple { background: rgba(124,92,255,.1); color: var(--blue-2); }
 
-    /* ── PRODUCTS SECTION ── */
-    .products-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    .product-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .product-card:hover { border-color: var(--border-bright); transform: translateY(-4px); }
-    .product-card-header {
-      padding: 40px 40px 32px;
-      border-bottom: 1px solid var(--border);
-    }
-    .product-tag {
-      display: inline-block;
-      font-size: 11px; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; padding: 4px 12px;
-      border-radius: 100px; margin-bottom: 20px;
-    }
-    .tag-innovative { background: rgba(79,142,247,0.12); color: var(--accent); border: 1px solid rgba(79,142,247,0.2); }
-    .tag-generic { background: rgba(0,212,170,0.12); color: var(--accent-teal); border: 1px solid rgba(0,212,170,0.2); }
-    .tag-supply { background: rgba(245,158,11,0.12); color: var(--accent-amber); border: 1px solid rgba(245,158,11,0.2); }
-    .product-card-title {
-      font-size: 26px; font-weight: 800; letter-spacing: -0.5px;
-      margin-bottom: 12px;
-    }
-    .product-card-sub { font-size: 15px; color: var(--text-2); line-height: 1.6; }
-    .product-card-body { padding: 32px 40px; }
-    .capability-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
-    .capability-list li {
-      display: flex; gap: 12px;
-      font-size: 14px; color: var(--text-2);
-      align-items: flex-start;
-    }
-    .cap-icon {
-      width: 20px; height: 20px; flex-shrink: 0;
-      background: rgba(79,142,247,0.15);
-      border-radius: 4px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; margin-top: 2px;
-    }
-    .cap-icon.teal { background: rgba(0,212,170,0.15); }
-    .cap-icon.amber { background: rgba(245,158,11,0.15); }
-    .cap-text strong { color: var(--text); font-weight: 600; }
-    .product-metrics {
-      display: flex; gap: 24px; margin-top: 28px;
-      padding-top: 28px; border-top: 1px solid var(--border);
-      flex-wrap: wrap;
-    }
-    .product-metric { }
-    .pm-num { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-    .pm-label { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+    /* ── SCREENSHOT MOCKUP ── */
+    .mockup-wrap { background: #07070e; border: 1px solid var(--border-b); border-radius: 14px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,.6); }
+    .mockup-bar { background: #0e0e1a; border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; gap: 8px; }
+    .mb-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .mb-r { background: #ff5f56; } .mb-y { background: #ffbd2e; } .mb-g { background: #27c93f; }
+    .mb-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); margin-left: 6px; }
+    .mockup-body { padding: 0; }
 
-    /* ── HOW IT WORKS ── */
-    .how-strip {
-      background: var(--bg-1);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .steps-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 1px; background: var(--border);
-    }
-    .step-card {
-      background: var(--bg-1);
-      padding: 48px 32px;
-    }
-    .step-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px; font-weight: 500; color: var(--accent);
-      letter-spacing: 1px; margin-bottom: 20px;
-    }
-    .step-title { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
-    .step-desc { font-size: 14px; color: var(--text-2); line-height: 1.65; }
+    /* POS MOCKUP */
+    .pos-mockup { display: grid; grid-template-columns: 200px 1fr; min-height: 440px; }
+    .pos-sidebar { background: #0a0a16; border-right: 1px solid var(--border); padding: 20px 0; }
+    .ps-section { padding: 6px 16px 14px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+    .ps-label { font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
+    .ps-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 6px; font-size: 12px; color: var(--text-2); cursor: pointer; margin-bottom: 2px; }
+    .ps-item.active { background: rgba(79,142,247,.14); color: var(--blue); }
+    .ps-icon { font-size: 13px; opacity: .7; }
+    .pos-main { padding: 24px; display: flex; flex-direction: column; gap: 18px; overflow: hidden; }
+    .pos-header { display: flex; align-items: center; justify-content: space-between; }
+    .pos-h-title { font-size: 15px; font-weight: 700; }
+    .pos-h-badge { background: rgba(34,197,94,.12); color: var(--green); border: 1px solid rgba(34,197,94,.2); border-radius: 6px; font-size: 11px; font-weight: 700; padding: 3px 10px; }
+    .pos-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .pos-card { background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+    .pc-label { font-size: 10px; color: var(--text-3); font-weight: 600; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 8px; }
+    .pc-value { font-size: 26px; font-weight: 900; letter-spacing: -1px; font-family: 'JetBrains Mono', monospace; }
+    .pc-sub { font-size: 10.5px; color: var(--text-3); margin-top: 4px; }
+    .pc-bar { height: 3px; background: var(--border); border-radius: 2px; margin-top: 10px; }
+    .pc-bar-fill { height: 100%; border-radius: 2px; }
+    .pos-gauge-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .gauge-block { background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+    .gauge-title { font-size: 11px; color: var(--text-3); font-weight: 600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .8px; }
+    .gauge-arc-wrap { display: flex; align-items: center; gap: 16px; }
+    .gauge-arc { width: 72px; height: 72px; flex-shrink: 0; }
+    .gauge-details { flex: 1; }
+    .gauge-pct { font-size: 28px; font-weight: 900; letter-spacing: -1px; font-family: 'JetBrains Mono', monospace; }
+    .gauge-ci { font-size: 10.5px; color: var(--text-3); margin-top: 3px; }
+    .gauge-decision { display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 5px; }
+    .gd-proceed { background: rgba(34,197,94,.12); color: var(--green); }
+    .gd-review { background: rgba(245,158,11,.12); color: var(--amber); }
+    .whatif-block { background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+    .wi-title { font-size: 11px; color: var(--text-3); font-weight: 600; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 12px; }
+    .wi-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+    .wi-row:last-child { border-bottom: none; }
+    .wi-name { font-size: 12px; color: var(--text-2); }
+    .wi-change { font-size: 12px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+    .wi-bar-wrap { display: flex; align-items: center; gap: 8px; flex: 1; margin: 0 14px; }
+    .wi-bar-t { height: 4px; background: var(--border); border-radius: 2px; flex: 1; }
+    .wi-bar-f { height: 100%; border-radius: 2px; background: var(--blue); }
 
-    /* ── MODULES SECTION ── */
-    .modules-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1px; background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 16px; overflow: hidden;
-    }
-    .module-cell {
-      background: var(--bg-card);
-      padding: 32px 28px;
-      transition: background 0.2s;
-    }
-    .module-cell:hover { background: var(--bg-card-hover); }
-    .module-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px; color: var(--text-3);
-      margin-bottom: 12px;
-    }
-    .module-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-    .module-desc { font-size: 13px; color: var(--text-2); line-height: 1.6; }
-    .module-badge {
-      margin-top: 14px;
-      display: inline-block;
-      font-size: 11px; font-weight: 600;
-      padding: 3px 10px; border-radius: 100px;
-    }
-    .badge-core { background: rgba(79,142,247,0.1); color: var(--accent); }
-    .badge-intel { background: rgba(0,212,170,0.1); color: var(--accent-teal); }
-    .badge-generic { background: rgba(124,92,255,0.1); color: var(--accent-2); }
+    /* GENERIC MOCKUP */
+    .gen-mockup { display: grid; grid-template-columns: 200px 1fr; min-height: 480px; }
+    .gen-sidebar { background: #091413; border-right: 1px solid rgba(0,212,170,.1); padding: 20px 0; }
+    .gps-item { display: flex; align-items: center; gap: 8px; padding: 7px 16px; font-size: 12px; color: var(--text-2); cursor: pointer; margin-bottom: 2px; }
+    .gps-item.active { background: rgba(0,212,170,.1); color: var(--teal); border-left: 2px solid var(--teal); }
+    .gen-main { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
+    .gen-top-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .gtc { background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 9px; padding: 14px 12px; }
+    .gtc-lbl { font-size: 9.5px; color: var(--text-3); font-weight: 600; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 6px; }
+    .gtc-val { font-size: 22px; font-weight: 900; letter-spacing: -1px; font-family: 'JetBrains Mono', monospace; }
+    .gtc-sub { font-size: 10px; color: var(--text-3); margin-top: 3px; }
+    .cliff-plot { background: rgba(255,255,255,.02); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+    .cp-title { font-size: 11px; color: var(--text-3); font-weight: 600; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 12px; }
+    .cliff-chart { height: 120px; display: flex; align-items: flex-end; gap: 6px; padding: 0 4px; position: relative; }
+    .cliff-year-labels { display: flex; justify-content: space-around; padding: 6px 4px 0; }
+    .cyl { font-size: 9px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+    .cliff-bar { flex: 1; border-radius: 3px 3px 0 0; transition: opacity .2s; min-width: 0; cursor: pointer; position: relative; }
+    .cliff-bar:hover { opacity: .8; }
+    .radar-table { background: rgba(255,255,255,.02); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .rt-header { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+    .rt-th { font-size: 10px; color: var(--text-3); font-weight: 600; letter-spacing: .6px; text-transform: uppercase; }
+    .rt-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,.04); align-items: center; }
+    .rt-row:last-child { border-bottom: none; }
+    .rt-drug { font-size: 12.5px; font-weight: 600; }
+    .rt-val { font-size: 12px; color: var(--text-2); font-family: 'JetBrains Mono', monospace; }
+    .rt-score { display: inline-flex; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+    .rs-high { background: rgba(34,197,94,.12); color: var(--green); }
+    .rs-med { background: rgba(245,158,11,.12); color: var(--amber); }
+    .rs-low { background: rgba(239,68,68,.12); color: var(--red); }
+    .rt-action { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+    .act-now { background: rgba(34,197,94,.1); color: var(--green); }
+    .act-dev { background: rgba(79,142,247,.1); color: var(--blue); }
+    .act-watch { background: rgba(255,255,255,.06); color: var(--text-3); }
 
     /* ── PROOF STRIP ── */
-    .proof-strip {
-      background: linear-gradient(135deg, rgba(79,142,247,0.06), rgba(124,92,255,0.06));
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .proof-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 48px;
-    }
+    .proof-strip { background: linear-gradient(135deg, rgba(79,142,247,.06), rgba(124,92,255,.06)); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .proof-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px; }
     .proof-item { text-align: center; }
-    .proof-num {
-      font-size: 48px; font-weight: 900; letter-spacing: -2px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .proof-label { font-size: 14px; color: var(--text-2); margin-top: 8px; line-height: 1.4; }
+    .proof-num { font-size: 50px; font-weight: 900; letter-spacing: -2.5px; background: linear-gradient(135deg, var(--blue), var(--blue-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .proof-lbl { font-size: 13.5px; color: var(--text-2); margin-top: 8px; line-height: 1.45; }
 
     /* ── SUPPLY CHAIN ── */
-    .supply-split {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 80px; align-items: center;
-    }
-    .supply-visual {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 48px 40px;
-      position: relative; overflow: hidden;
-    }
-    .supply-visual::before {
-      content: '';
-      position: absolute; top: -60px; right: -60px;
-      width: 200px; height: 200px;
-      background: radial-gradient(circle, rgba(245,158,11,0.1), transparent);
-      border-radius: 50%;
-    }
-    .supply-nodes { display: flex; flex-direction: column; gap: 16px; }
-    .supply-node {
-      display: flex; align-items: center; gap: 16px;
-      padding: 14px 18px;
-      background: rgba(245,158,11,0.05);
-      border: 1px solid rgba(245,158,11,0.12);
-      border-radius: 8px;
-    }
-    .supply-node-icon {
-      width: 36px; height: 36px; flex-shrink: 0;
-      background: rgba(245,158,11,0.1);
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
-    }
-    .supply-node-text { font-size: 14px; font-weight: 600; }
-    .supply-node-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
-    .supply-arrow {
-      text-align: center; font-size: 18px; color: var(--text-3);
-      margin: -4px 0;
-    }
-    .supply-capabilities { display: flex; flex-direction: column; gap: 28px; }
-    .supply-cap-item { display: flex; gap: 20px; align-items: flex-start; }
-    .supply-cap-icon {
-      width: 44px; height: 44px; flex-shrink: 0;
-      background: rgba(245,158,11,0.1);
-      border: 1px solid rgba(245,158,11,0.15);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-    }
-    .supply-cap-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
-    .supply-cap-desc { font-size: 14px; color: var(--text-2); line-height: 1.6; }
-    .supply-coming-soon {
-      display: inline-flex; align-items: center; gap: 6px;
-      margin-top: 6px;
-      font-size: 11px; font-weight: 600; color: var(--accent-amber);
-      letter-spacing: 0.5px;
-    }
-
-    /* ── AUDIENCE TABS ── */
-    .audience-wrapper { }
-    .audience-tabs {
-      display: flex; gap: 2px;
-      background: var(--bg-card); border-radius: 10px;
-      padding: 4px; width: fit-content; margin-bottom: 40px;
-    }
-    .audience-tab {
-      padding: 10px 24px; border-radius: 7px;
-      font-size: 14px; font-weight: 600;
-      cursor: pointer; transition: background 0.2s, color 0.2s;
-      color: var(--text-3); border: none; background: transparent;
-    }
-    .audience-tab.active { background: var(--accent); color: #fff; }
-    .audience-content { display: none; }
-    .audience-content.active { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-    .audience-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 32px;
-    }
-    .audience-card-icon { font-size: 32px; margin-bottom: 16px; }
-    .audience-card-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
-    .audience-card-points { display: flex; flex-direction: column; gap: 10px; }
-    .audience-point {
-      font-size: 14px; color: var(--text-2);
-      display: flex; gap: 10px; align-items: flex-start;
-    }
-    .audience-point::before {
-      content: '→'; color: var(--accent); flex-shrink: 0;
-      font-weight: 700; margin-top: 1px;
-    }
-
-    /* ── MODEL PERFORMANCE ── */
-    .perf-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-    .perf-table th {
-      text-align: left; padding: 14px 20px;
-      font-size: 11px; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; color: var(--text-3);
-      border-bottom: 1px solid var(--border);
-    }
-    .perf-table td {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-2);
-    }
-    .perf-table tr:last-child td { border-bottom: none; }
-    .perf-table tr:hover td { background: rgba(255,255,255,0.02); }
-    .auc-bar-wrap { display: flex; align-items: center; gap: 12px; }
-    .auc-bar-track {
-      flex: 1; height: 4px; background: var(--border);
-      border-radius: 2px; max-width: 120px;
-    }
-    .auc-bar-fill { height: 100%; border-radius: 2px; }
-    .auc-val { font-weight: 700; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
-    .phase-badge {
-      display: inline-block;
-      padding: 3px 10px; border-radius: 4px;
-      font-size: 12px; font-weight: 600;
-    }
-    .phase-1 { background: rgba(79,142,247,0.12); color: var(--accent); }
-    .phase-2 { background: rgba(124,92,255,0.12); color: var(--accent-2); }
-    .phase-3 { background: rgba(0,212,170,0.12); color: var(--accent-teal); }
-    .perf-wrapper {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 16px; overflow: hidden;
-    }
-    .perf-header {
-      padding: 28px 28px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .perf-header-title { font-size: 15px; font-weight: 700; }
-    .perf-header-sub { font-size: 13px; color: var(--text-3); margin-top: 4px; }
-    .live-dot {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 12px; font-weight: 600; color: var(--green);
-    }
-    .live-dot::before {
-      content: ''; width: 7px; height: 7px;
-      background: var(--green); border-radius: 50%;
-      display: block;
-      animation: pulse 2s infinite;
-    }
+    .supply-split { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .supply-vis { background: var(--bg-card); border: 1px solid rgba(245,158,11,.12); border-radius: 16px; padding: 40px 36px; }
+    .supply-node { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: rgba(245,158,11,.05); border: 1px solid rgba(245,158,11,.1); border-radius: 8px; }
+    .sn-icon { width: 34px; height: 34px; flex-shrink: 0; background: rgba(245,158,11,.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+    .sn-t { font-size: 13.5px; font-weight: 600; }
+    .sn-s { font-size: 11.5px; color: var(--text-3); margin-top: 2px; }
+    .supply-arrow { text-align: center; font-size: 16px; color: var(--text-3); padding: 4px 0; }
+    .supply-caps { display: flex; flex-direction: column; gap: 32px; }
+    .sc-item { display: flex; gap: 20px; }
+    .sc-icon { width: 44px; height: 44px; flex-shrink: 0; background: rgba(245,158,11,.09); border: 1px solid rgba(245,158,11,.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .sc-t { font-size: 16px; font-weight: 700; margin-bottom: 7px; }
+    .sc-d { font-size: 14px; color: var(--text-2); line-height: 1.65; }
+    .soon { display: inline-flex; align-items: center; gap: 5px; margin-top: 7px; font-size: 11px; font-weight: 600; color: var(--amber); }
 
     /* ── CTA ── */
-    .cta-section {
-      background: linear-gradient(135deg, rgba(79,142,247,0.08), rgba(124,92,255,0.08));
-      border-top: 1px solid var(--border);
-    }
-    .cta-inner {
-      text-align: center;
-      max-width: 640px; margin: 0 auto;
-      padding: 120px 24px;
-    }
-    .cta-inner h2 {
-      font-size: clamp(36px, 5vw, 56px);
-      font-weight: 900; letter-spacing: -2px;
-      line-height: 1.05; margin-bottom: 20px;
-    }
-    .cta-inner p {
-      font-size: 18px; color: var(--text-2);
-      margin-bottom: 40px; line-height: 1.6;
-    }
-    .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .cta-note { font-size: 13px; color: var(--text-3); margin-top: 20px; }
+    .cta-sec { background: linear-gradient(135deg, rgba(79,142,247,.07), rgba(124,92,255,.07)); border-top: 1px solid var(--border); }
+    .cta-inner { text-align: center; max-width: 620px; margin: 0 auto; padding: 120px 28px; }
+    .cta-inner h2 { font-size: clamp(38px, 5.5vw, 62px); font-weight: 900; letter-spacing: -2.5px; line-height: 1.02; margin-bottom: 20px; }
+    .cta-inner p { font-size: 17px; color: var(--text-2); margin-bottom: 40px; line-height: 1.65; }
+    .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .cta-note { font-size: 12.5px; color: var(--text-3); margin-top: 18px; }
 
     /* ── FOOTER ── */
-    footer {
-      background: var(--bg-1);
-      border-top: 1px solid var(--border);
-      padding: 48px 48px 32px;
-    }
-    .footer-grid {
-      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 48px; max-width: 1160px; margin: 0 auto;
-      padding-bottom: 48px;
-      border-bottom: 1px solid var(--border);
-    }
-    .footer-brand-desc {
-      font-size: 14px; color: var(--text-3);
-      line-height: 1.7; margin-top: 16px; max-width: 280px;
-    }
-    .footer-col-title {
-      font-size: 12px; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; color: var(--text-3);
-      margin-bottom: 16px;
-    }
-    .footer-col a {
-      display: block; font-size: 14px; color: var(--text-2);
-      text-decoration: none; margin-bottom: 10px;
-      transition: color 0.2s;
-    }
-    .footer-col a:hover { color: var(--text); }
-    .footer-bottom {
-      max-width: 1160px; margin: 0 auto;
-      display: flex; justify-content: space-between; align-items: center;
-      padding-top: 24px;
-      font-size: 13px; color: var(--text-3);
-    }
-    .footer-bottom-right { display: flex; gap: 24px; }
-    .footer-bottom-right a { color: var(--text-3); text-decoration: none; }
-    .footer-bottom-right a:hover { color: var(--text-2); }
+    footer { background: var(--bg-1); border-top: 1px solid var(--border); padding: 56px 52px 36px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; max-width: 1180px; margin: 0 auto; padding-bottom: 48px; border-bottom: 1px solid var(--border); }
+    .footer-desc { font-size: 13.5px; color: var(--text-3); line-height: 1.7; margin-top: 14px; max-width: 270px; }
+    .fc-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
+    .fc a { display: block; font-size: 13.5px; color: var(--text-2); text-decoration: none; margin-bottom: 10px; transition: color .2s; }
+    .fc a:hover { color: var(--text); }
+    .footer-bottom { max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding-top: 24px; font-size: 12.5px; color: var(--text-3); }
+    .fb-right { display: flex; gap: 20px; }
+    .fb-right a { color: var(--text-3); text-decoration: none; }
 
-    /* ── TERMINAL DEMO WIDGET ── */
-    .terminal-widget {
-      background: #0d0d12;
-      border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .terminal-bar {
-      background: #141420;
-      border-bottom: 1px solid var(--border);
-      padding: 12px 16px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .t-red { background: #ff5f56; }
-    .t-yellow { background: #ffbd2e; }
-    .t-green { background: #27c93f; }
-    .terminal-title { font-size: 12px; color: var(--text-3); margin-left: 8px; }
-    .terminal-body { padding: 24px; font-size: 12px; line-height: 2; }
-    .t-prompt { color: var(--accent-2); }
-    .t-cmd { color: var(--text); }
-    .t-comment { color: var(--text-3); }
-    .t-key { color: var(--accent); }
-    .t-val { color: var(--accent-teal); }
-    .t-warn { color: var(--accent-amber); }
-    .t-success { color: var(--green); }
-
-    /* ── DIVIDER ── */
-    .divider-line {
-      height: 1px; background: var(--border);
-      margin: 0;
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
       nav { padding: 0 24px; }
       .nav-links { display: none; }
-      .products-grid,
-      .supply-split,
-      .positioning-items,
-      .steps-grid,
-      .modules-grid { grid-template-columns: 1fr; }
-      .proof-grid { grid-template-columns: repeat(2, 1fr); }
+      .split-intro-grid, .supply-split, .pos-mockup, .gen-mockup { grid-template-columns: 1fr; }
+      .pos-sidebar, .gen-sidebar { display: none; }
+      .mod-grid-blue, .mod-grid-teal { grid-template-columns: 1fr; }
+      .proof-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
-      .hero-metrics { gap: 32px; }
-      .audience-content.active { grid-template-columns: 1fr; }
+      .pos-cards { grid-template-columns: 1fr 1fr; }
+      .gen-top-cards { grid-template-columns: repeat(2, 1fr); }
+      .pos-gauge-row { grid-template-columns: 1fr; }
     }
-    @media (max-width: 600px) {
-      .proof-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .hero h1 { letter-spacing: -2px; }
-    }
-
-    /* ── SCROLL REVEAL ── */
-    .reveal {
-      opacity: 0; transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal.visible { opacity: 1; transform: none; }
   </style>
 </head>
 <body>
 
-<!-- GRID CANVAS BACKGROUND -->
-<canvas id="grid-canvas"></canvas>
+<canvas id="gc"></canvas>
 
-<!-- NAVIGATION -->
+<!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
-    <div class="nav-logo-mark">K</div>
+    <div class="logo-mark">K</div>
     Kairos Intelligence
   </a>
   <div class="nav-links">
-    <a href="#products">Products</a>
-    <a href="#platform">Platform</a>
-    <a href="#supply-chain">Supply Chain</a>
-    <a href="#performance">Proof</a>
-    <a href="#contact">Contact</a>
+    <a href="#innovative">Innovative Pharma</a>
+    <a href="#generic">Generic Pharma</a>
+    <a href="#supply">Supply Chain</a>
+    <span class="nav-sep">·</span>
+    <a href="#proof">Proof</a>
+    <a href="demo-generic.html" target="_blank" class="nav-pill">▶ Watch Demo</a>
   </div>
-  <a href="#contact" class="nav-cta">Request Demo</a>
+  <a href="#contact" class="nav-cta">Get Access →</a>
 </nav>
 
-<!-- ═══════════════════════════════════════════ HERO ══ -->
+<!-- ═══ HERO ═══ -->
 <section class="hero">
-  <div class="hero-badge">
-    <span class="hero-badge-dot"></span>
-    Decision Intelligence Platform — Pharma &amp; Life Sciences
+  <div class="hero-badge"><span class="badge-dot"></span>Decision Intelligence Platform · Pharma &amp; Life Sciences</div>
+  <h1>The OS for <span class="grad-blue">high-stakes</span><br/>pharma decisions.</h1>
+  <p class="hero-sub">One platform architecture. Two distinct products — purpose-built for innovative drug development and generic market entry. Because the decisions are different. The buyers are different. The data is different.</p>
+  <div class="hero-btns">
+    <a href="#innovative" class="btn-p">Innovative Pharma →</a>
+    <a href="#generic" class="btn-teal">Generic Pharma →</a>
+    <a href="demo-generic.html" target="_blank" class="btn-ghost" style="display:inline-flex;align-items:center;gap:8px;">▶ Watch Demo</a>
   </div>
-
-  <h1>
-    The OS for<br/>
-    <span class="gradient-text">High-Stakes</span><br/>
-    Pharma Decisions.
-  </h1>
-
-  <p class="hero-sub">
-    Kairos converts 12,773 clinical trials, patent databases, FDA records,
-    and real-time market data into one answer — <em>Proceed, Review, or Stop</em> —
-    before your organization commits the next $100M.
-  </p>
-
-  <div class="hero-actions">
-    <a href="#contact" class="btn-primary">Request a Demo →</a>
-    <a href="#products" class="btn-ghost">Explore the Platform</a>
-  </div>
-
-  <div class="hero-metrics">
-    <div class="hero-metric">
-      <div class="hero-metric-num">12,<span>773</span></div>
-      <div class="hero-metric-label">Clinical Trials Analyzed</div>
-    </div>
-    <div class="hero-metric">
-      <div class="hero-metric-num"><span>129</span></div>
-      <div class="hero-metric-label">AI Features Per Prediction</div>
-    </div>
-    <div class="hero-metric">
-      <div class="hero-metric-num">0.<span>81</span></div>
-      <div class="hero-metric-label">AUC-ROC (validated, out-of-sample)</div>
-    </div>
-    <div class="hero-metric">
-      <div class="hero-metric-num">$<span>32</span>B+</div>
-      <div class="hero-metric-label">Revenue Tracked on Patent Cliff</div>
-    </div>
+  <div class="hero-stats">
+    <div class="hs"><div class="hs-num">12,<span>773</span></div><div class="hs-lbl">Clinical Trials Analyzed</div></div>
+    <div class="hs"><div class="hs-num"><span>129</span></div><div class="hs-lbl">AI Features Per Prediction</div></div>
+    <div class="hs"><div class="hs-num">0.<span>81</span></div><div class="hs-lbl">AUC-ROC (out-of-sample)</div></div>
+    <div class="hs"><div class="hs-num">$<span>32</span>B+</div><div class="hs-lbl">Revenue on Patent Cliff</div></div>
   </div>
 </section>
 
-<!-- ═════════════════════════════════ POSITIONING STRIP ══ -->
-<section class="positioning-strip">
-  <div class="section-wrapper" style="padding: 0;">
-    <div class="positioning-items">
-      <div class="positioning-item reveal">
-        <div class="pos-icon">🧠</div>
-        <div class="pos-title">Decision Intelligence, Not Data Intelligence</div>
-        <div class="pos-desc">The output isn't a table or a report. It's PROCEED, REVIEW, or RECONSIDER — the language your Board and portfolio committees actually act on.</div>
+<!-- ═══ SPLIT INTRO ═══ -->
+<section class="split-intro">
+  <div class="split-intro-grid">
+    <a href="#innovative" class="si-card reveal">
+      <div class="si-tag tag-blue">Innovative Pharma</div>
+      <div class="si-title">Kinase Intelligence Platform</div>
+      <div class="si-sub">For CSOs, CMOs, clinical ops, and BD teams at innovative pharma — the ML engine that converts trial parameters into a go/no-go decision before you commit the next $100M.</div>
+      <div class="si-bullets">
+        <div class="si-bullet">Trial POS prediction with AUC 0.81 — Phase 1, 2, and 3</div>
+        <div class="si-bullet">What-If protocol optimizer — quantify every design lever</div>
+        <div class="si-bullet">eNPV calculator — science and finance on one number</div>
+        <div class="si-bullet">Competitive landscape + patent cliff intelligence</div>
       </div>
-      <div class="positioning-item reveal">
-        <div class="pos-icon">⚡</div>
-        <div class="pos-title">Real Infrastructure, Not a Consulting Engagement</div>
-        <div class="pos-desc">A deployed, reproducible, auditable platform — not a PDF deck. Your analysts run it themselves. The recommendations don't change when a consultant leaves.</div>
+      <span class="si-arrow">→</span>
+    </a>
+    <a href="#generic" class="si-card reveal">
+      <div class="si-tag tag-teal">Generic Pharma</div>
+      <div class="si-title">Portfolio Decision Platform</div>
+      <div class="si-sub">For generic BD, portfolio strategy, and API teams at MSN Labs, Sun Pharma, Cipla, Dr. Reddy's — the intelligence layer for ANDA prioritization, entry timing, and API feasibility.</div>
+      <div class="si-bullets">
+        <div class="si-bullet">Generic Entry Radar — rank every ANDA opportunity</div>
+        <div class="si-bullet">Patent Cliff Monitor — live ANDA counts from OpenFDA</div>
+        <div class="si-bullet">Price erosion forecasting — NADAC + CMS revenue modeling</div>
+        <div class="si-bullet">API complexity scoring via RDKit molecular analysis</div>
       </div>
-      <div class="positioning-item reveal">
-        <div class="pos-icon">🔒</div>
-        <div class="pos-title">Built for Where the Money Is Lost</div>
-        <div class="pos-desc">Phase 3 failures cost $300M–$1B per program. Patent cliff blind spots cost generic companies years of revenue. We eliminate both — with quantified confidence.</div>
-      </div>
-    </div>
+      <span class="si-arrow">→</span>
+    </a>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════ PRODUCTS ══ -->
-<section id="products">
-  <div class="section-wrapper">
-    <div class="section-header reveal">
-      <div class="section-label">Products</div>
-      <h2 class="section-title">Two platforms.<br/>One decision architecture.</h2>
-      <p class="section-subtitle">Built for the full pharma value chain — from clinical pipeline to generic market entry.</p>
+<!-- ═══════════════════════════════════════ INNOVATIVE PHARMA ═══ -->
+<section id="innovative" class="sec">
+  <div class="wrap">
+    <div class="hdr reveal">
+      <div class="lbl">Innovative Pharma · Kinase Intelligence Platform</div>
+      <h2 class="h2">Built for the decisions<br/>that cost <span class="grad-blue">$1B when wrong.</span></h2>
+      <p class="sub">Phase 3 failures cost $300M–$1B per program. Most could have been signaled earlier. KIP gives your portfolio team the quantified POS, competitive map, and eNPV to defend — or reconsider — a program before the money is committed.</p>
     </div>
 
-    <div class="products-grid">
+    <!-- MODULES -->
+    <div class="hdr reveal" style="margin-bottom:28px; margin-top:0;">
+      <div class="lbl">6 Core Modules</div>
+    </div>
+    <div class="mod-grid-blue reveal" style="margin-bottom: 72px;">
+      <div class="mod-cell">
+        <div class="mod-n">01 · FLAGSHIP</div>
+        <div class="mod-t">TPP Intelligence Hub</div>
+        <div class="mod-d">Input a Target Product Profile. Get POS, competitive position, eNPV, risk flags, and a PROCEED / REVIEW / RECONSIDER decision in &lt;10 seconds. The single slide your Board needs.</div>
+        <span class="mod-badge mb-blue">Decision Output</span>
+      </div>
+      <div class="mod-cell">
+        <div class="mod-n">02 · CORE</div>
+        <div class="mod-t">Trial POS Predictor</div>
+        <div class="mod-d">Full 129-feature ML prediction with 90% confidence intervals. NCT auto-fill from ClinicalTrials.gov. Feature Inspector with complete audit trail. No black box.</div>
+        <span class="mod-badge mb-blue">ML Engine</span>
+      </div>
+      <div class="mod-cell">
+        <div class="mod-n">03 · CORE</div>
+        <div class="mod-t">What-If Protocol Optimizer</div>
+        <div class="mod-d">"Adding 30 sites: +8pp POS. Adding a DMC: +4pp. Double-blind vs single: +6pp." Every protocol design lever ranked by clinical impact. Replaces 3-week optimization workshops.</div>
+        <span class="mod-badge mb-purple">Design Intelligence</span>
+      </div>
+      <div class="mod-cell">
+        <div class="mod-n">04 · FINANCIAL</div>
+        <div class="mod-t">eNPV Calculator</div>
+        <div class="mod-d">Probability-weighted NPV with waterfall charts, sensitivity analysis, break-even POS thresholds. Uses the same POS the clinical team generates — CFO and CSO, finally aligned.</div>
+        <span class="mod-badge mb-blue">Financial Model</span>
+      </div>
+      <div class="mod-cell">
+        <div class="mod-n">05 · INTELLIGENCE</div>
+        <div class="mod-t">Competitive Landscape</div>
+        <div class="mod-d">Competitive density by kinase target × indication. Success rates by phase and sponsor. Every rival program, their phase history, and win rates — before you enter Phase 3.</div>
+        <span class="mod-badge mb-purple">CI Intelligence</span>
+      </div>
+      <div class="mod-cell">
+        <div class="mod-n">06 · INTELLIGENCE</div>
+        <div class="mod-t">Company Pipeline Scanner</div>
+        <div class="mod-d">Type a company name. Get their entire kinase pipeline live from ClinicalTrials.gov, with POS predictions on every program. The competitive intelligence briefing that used to take 3 days.</div>
+        <span class="mod-badge mb-purple">CI Intelligence</span>
+      </div>
+    </div>
 
-      <!-- INNOVATIVE PHARMA -->
-      <div class="product-card reveal">
-        <div class="product-card-header">
-          <div class="product-tag tag-innovative">Innovative Pharma</div>
-          <div class="product-card-title">Kinase Intelligence<br/>Platform (KIP)</div>
-          <div class="product-card-sub">The first ML-powered probability-of-success engine for kinase inhibitor clinical trials — with full competitive landscape, eNPV modeling, and pipeline intelligence built in.</div>
-        </div>
-        <div class="product-card-body">
-          <ul class="capability-list">
-            <li>
-              <div class="cap-icon">→</div>
-              <div class="cap-text"><strong>Trial POS Prediction (AUC 0.81)</strong> — Input any trial parameters; get probability-of-success with 90% confidence intervals. Trained on 12,773 trials, validated drug-level out-of-sample.</div>
-            </li>
-            <li>
-              <div class="cap-icon">→</div>
-              <div class="cap-text"><strong>What-If Protocol Optimizer</strong> — "Adding 30 sites increases POS by +8pp. Adding a DMC adds +4pp." Rank every design lever by clinical impact. Replaces 3-week protocol optimization workshops.</div>
-            </li>
-            <li>
-              <div class="cap-icon">→</div>
-              <div class="cap-text"><strong>eNPV Calculator</strong> — Probability-weighted NPV with waterfall charts, sensitivity analysis, and break-even POS thresholds. CFO and CSO looking at the same number, finally.</div>
-            </li>
-            <li>
-              <div class="cap-icon">→</div>
-              <div class="cap-text"><strong>Competitive Landscape Map</strong> — Competitive density by kinase target × indication. See every rival program, phase distribution, and win rates before committing to Phase 3.</div>
-            </li>
-            <li>
-              <div class="cap-icon">→</div>
-              <div class="cap-text"><strong>Patent Cliff Monitor</strong> — Live ANDA filings from OpenFDA. Revenue-at-risk dashboards. Generic entry probability scores. The intelligence layer your BD team was building in PowerPoint.</div>
-            </li>
-          </ul>
-          <div class="product-metrics">
-            <div class="product-metric">
-              <div class="pm-num" style="color: var(--accent);">9</div>
-              <div class="pm-label">Intelligence Modules</div>
+    <!-- POS MOCKUP -->
+    <div class="hdr reveal" style="margin-bottom:28px;">
+      <div class="lbl">Platform in Action · Trial POS Predictor</div>
+      <div class="h2" style="font-size:clamp(26px,3vw,38px);">What your team sees<br/>in under 10 seconds.</div>
+    </div>
+    <div class="mockup-wrap reveal">
+      <div class="mockup-bar">
+        <span class="mb-dot mb-r"></span><span class="mb-dot mb-y"></span><span class="mb-dot mb-g"></span>
+        <span class="mb-title">Kairos KIP · Trial POS Predictor — imatinib / CML / Phase 2</span>
+      </div>
+      <div class="mockup-body">
+        <div class="pos-mockup">
+          <!-- sidebar -->
+          <div class="pos-sidebar">
+            <div class="ps-section">
+              <div class="ps-label">Core Modules</div>
+              <div class="ps-item"><span class="ps-icon">🏠</span> Overview</div>
+              <div class="ps-item active"><span class="ps-icon">🎯</span> Trial POS Predictor</div>
+              <div class="ps-item"><span class="ps-icon">💰</span> eNPV Calculator</div>
             </div>
-            <div class="product-metric">
-              <div class="pm-num" style="color: var(--accent);">129</div>
-              <div class="pm-label">AI Features</div>
+            <div class="ps-section">
+              <div class="ps-label">Intelligence</div>
+              <div class="ps-item"><span class="ps-icon">🏢</span> Company Scanner</div>
+              <div class="ps-item"><span class="ps-icon">📊</span> Competitive Map</div>
+              <div class="ps-item"><span class="ps-icon">🔍</span> Program Explorer</div>
             </div>
-            <div class="product-metric">
-              <div class="pm-num" style="color: var(--accent);">0.81</div>
-              <div class="pm-label">AUC-ROC</div>
+          </div>
+          <!-- main -->
+          <div class="pos-main">
+            <div class="pos-header">
+              <div class="pos-h-title">Trial POS Prediction · imatinib → CML → Phase 2</div>
+              <div class="pos-h-badge">✓ PROCEED</div>
             </div>
-            <div class="product-metric">
-              <div class="pm-num" style="color: var(--accent);">3s</div>
-              <div class="pm-label">Time to Prediction</div>
+            <!-- metric cards -->
+            <div class="pos-cards">
+              <div class="pos-card">
+                <div class="pc-label">Phase 2 POS</div>
+                <div class="pc-value" style="color:var(--green);">84.7%</div>
+                <div class="pc-sub">90% CI: [79.1% — 90.3%]</div>
+                <div class="pc-bar"><div class="pc-bar-fill" style="width:84.7%;background:var(--green);"></div></div>
+              </div>
+              <div class="pos-card">
+                <div class="pc-label">eNPV</div>
+                <div class="pc-value" style="color:var(--blue);">$1.24B</div>
+                <div class="pc-sub">Novartis/Hampson DCF model</div>
+                <div class="pc-bar"><div class="pc-bar-fill" style="width:72%;background:var(--blue);"></div></div>
+              </div>
+              <div class="pos-card">
+                <div class="pc-label">Competitive Density</div>
+                <div class="pc-value" style="color:var(--amber);">HIGH</div>
+                <div class="pc-sub">41 trials · 12 active programs</div>
+                <div class="pc-bar"><div class="pc-bar-fill" style="width:78%;background:var(--amber);"></div></div>
+              </div>
+            </div>
+            <!-- gauge + what-if -->
+            <div class="pos-gauge-row">
+              <div class="gauge-block">
+                <div class="gauge-title">Phase Probability Breakdown</div>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                  <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="font-size:11px;color:var(--text-3);width:56px;">Phase 1</div>
+                    <div style="flex:1; height:6px; background:var(--border); border-radius:3px;"><div style="width:82%;height:100%;background:var(--blue);border-radius:3px;"></div></div>
+                    <div style="font-size:12px;font-weight:700;font-family:monospace;color:var(--blue);">82%</div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="font-size:11px;color:var(--text-3);width:56px;">Phase 2</div>
+                    <div style="flex:1; height:6px; background:var(--border); border-radius:3px;"><div style="width:84.7%;height:100%;background:var(--green);border-radius:3px;"></div></div>
+                    <div style="font-size:12px;font-weight:700;font-family:monospace;color:var(--green);">84.7%</div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:12px;">
+                    <div style="font-size:11px;color:var(--text-3);width:56px;">Phase 3</div>
+                    <div style="flex:1; height:6px; background:var(--border); border-radius:3px;"><div style="width:71%;height:100%;background:var(--blue-2);border-radius:3px;"></div></div>
+                    <div style="font-size:12px;font-weight:700;font-family:monospace;color:var(--blue-2);">71%</div>
+                  </div>
+                </div>
+                <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--border);">
+                  <div style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-bottom:6px;">Top Risk Factors</div>
+                  <div style="display:flex;flex-direction:column;gap:5px;">
+                    <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-2);"><span style="color:var(--amber);">⚠</span> High competitive density in indication</div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-2);"><span style="color:var(--green);">✓</span> FDA approval confirmed (prior indication)</div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-2);"><span style="color:var(--green);">✓</span> Strong genetic association (OpenTargets: 0.93)</div>
+                  </div>
+                </div>
+              </div>
+              <div class="whatif-block">
+                <div class="wi-title">⚡ What-If Protocol Optimizer</div>
+                <div class="wi-row">
+                  <div class="wi-name">Add 30 more sites (20→50)</div>
+                  <div class="wi-bar-wrap"><div class="wi-bar-t"><div class="wi-bar-f" style="width:80%;"></div></div></div>
+                  <div class="wi-change" style="color:var(--green);">+8.0pp</div>
+                </div>
+                <div class="wi-row">
+                  <div class="wi-name">Single-blind → Double-blind</div>
+                  <div class="wi-bar-wrap"><div class="wi-bar-t"><div class="wi-bar-f" style="width:60%;"></div></div></div>
+                  <div class="wi-change" style="color:var(--green);">+6.0pp</div>
+                </div>
+                <div class="wi-row">
+                  <div class="wi-name">Add Data Monitoring Committee</div>
+                  <div class="wi-bar-wrap"><div class="wi-bar-t"><div class="wi-bar-f" style="width:40%;"></div></div></div>
+                  <div class="wi-change" style="color:var(--green);">+4.0pp</div>
+                </div>
+                <div class="wi-row">
+                  <div class="wi-name">Add international sites</div>
+                  <div class="wi-bar-wrap"><div class="wi-bar-t"><div class="wi-bar-f" style="width:25%;"></div></div></div>
+                  <div class="wi-change" style="color:var(--green);">+2.5pp</div>
+                </div>
+                <div class="wi-row" style="border-bottom:none;">
+                  <div class="wi-name">Reduce enrollment (500→250)</div>
+                  <div class="wi-bar-wrap"><div class="wi-bar-t"><div class="wi-bar-f" style="width:35%;background:var(--red);"></div></div></div>
+                  <div class="wi-change" style="color:var(--red);">−3.5pp</div>
+                </div>
+                <div style="margin-top:12px;padding:10px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.12);border-radius:7px;font-size:11.5px;color:var(--text-2);line-height:1.5;">
+                  <span style="color:var(--green);font-weight:700;">Best action:</span> Add sites + DMC → POS improves to <strong style="color:var(--green);">96.7%</strong>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- GENERIC PHARMA -->
-      <div class="product-card reveal">
-        <div class="product-card-header">
-          <div class="product-tag tag-generic">Generic Pharma</div>
-          <div class="product-card-title">Portfolio Decision<br/>Intelligence Platform</div>
-          <div class="product-card-sub">The strategic operating system for generic pharma pipeline decisions — from ANDA prioritization and API complexity scoring to price erosion forecasting and market entry timing.</div>
-        </div>
-        <div class="product-card-body">
-          <ul class="capability-list">
-            <li>
-              <div class="cap-icon teal">→</div>
-              <div class="cap-text"><strong>Generic Entry Radar</strong> — Scan every Phase 3 kinase trial globally. Score each for generic entry viability: patent expiry window, ANDA competition density, CMS revenue potential, API complexity. Prioritize before your competition does.</div>
-            </li>
-            <li>
-              <div class="cap-icon teal">→</div>
-              <div class="cap-text"><strong>API Synthesis Complexity Scoring</strong> — RDKit-based molecular analysis combined with published process chemistry literature. Know the synthesis burden before committing to a development program.</div>
-            </li>
-            <li>
-              <div class="cap-icon teal">→</div>
-              <div class="cap-text"><strong>Price Erosion Forecasting</strong> — ML-powered trajectory modeling using NADAC data, CMS Part D spend, and ANDA filing velocity. Know the revenue curve before you file — not after first-to-market hits.</div>
-            </li>
-            <li>
-              <div class="cap-icon teal">→</div>
-              <div class="cap-text"><strong>Drug Dossier Intelligence</strong> — Auto-generated intelligence reports per molecule: bioequivalence literature from PubMed, FDA warning history, DMF status, Orange Book exclusivity. Full picture, one click.</div>
-            </li>
-            <li>
-              <div class="cap-icon teal">→</div>
-              <div class="cap-text"><strong>Bioequivalence Predictor</strong> — Predicts BE study complexity from molecular properties and published BE data. Cuts feasibility assessment time from weeks to hours.</div>
-            </li>
-          </ul>
-          <div class="product-metrics">
-            <div class="product-metric">
-              <div class="pm-num" style="color: var(--accent-teal);">$32B+</div>
-              <div class="pm-label">Revenue Tracked</div>
+    <div style="display:flex; gap:14px; margin-top:40px;" class="reveal">
+      <a href="#contact" class="btn-p">See Full KIP Demo →</a>
+      <a href="#contact" class="btn-ghost">Talk to Our Team</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ GENERIC PHARMA ═══ -->
+<section id="generic" class="sec sec-dark">
+  <div class="wrap">
+    <div class="hdr reveal">
+      <div class="lbl lbl-teal">Generic Pharma · Portfolio Decision Intelligence Platform</div>
+      <h2 class="h2">Built for the BD team that<br/>picks winners <span class="grad-teal">before competitors do.</span></h2>
+      <p class="sub">Generic ANDA decisions are portfolio bets — wrong calls mean years of development spend on commoditized molecules. This platform gives your team live market intelligence, price erosion forecasts, and API feasibility scores to prioritize with conviction.</p>
+    </div>
+
+    <!-- MODULES -->
+    <div class="hdr reveal" style="margin-bottom:28px; margin-top:0;">
+      <div class="lbl lbl-teal">3 Strategic Modules</div>
+    </div>
+    <div class="mod-grid-teal reveal" style="margin-bottom: 72px;">
+      <div class="mod-cell">
+        <div class="mod-n">01 · RADAR</div>
+        <div class="mod-t">Generic Entry Radar</div>
+        <div class="mod-d">Scan all Phase 3 kinase trials globally. Score each on: patent expiry window, ANDA competition from OpenFDA, CMS revenue at risk, and API synthesis complexity. One ranked list — act before the field crowds.</div>
+        <span class="mod-badge mb-teal">ANDA Prioritization</span>
+      </div>
+      <div class="mod-cell">
+        <div class="mod-n">02 · MONITOR</div>
+        <div class="mod-t">Patent Cliff Monitor</div>
+        <div class="mod-d">Live ANDA counts from OpenFDA Drugs@FDA API. Revenue-at-risk dashboards for every kinase inhibitor expiring in the next 5 years. $32B+ in tracked revenue. First-to-file decisions backed by real data.</div>
+        <span class="mod-badge mb-teal">Patent Intelligence</span>
+      </div>
+      <div class="mod-cell">
+        <div class="mod-n">03 · DOSSIER</div>
+        <div class="mod-t">Drug Intelligence Dossier</div>
+        <div class="mod-d">One-click intelligence report per molecule: BE literature from PubMed, FDA warning history, DMF status, Orange Book exclusivity, CMS Part D revenue, API complexity score. Print-ready for BD committees.</div>
+        <span class="mod-badge mb-teal">Decision Dossier</span>
+      </div>
+    </div>
+
+    <!-- GENERIC MOCKUP -->
+    <div class="hdr reveal" style="margin-bottom:28px;">
+      <div class="lbl lbl-teal">Platform in Action · Generic Entry Radar + Patent Cliff Monitor</div>
+      <div class="h2" style="font-size:clamp(26px,3vw,38px);">From a list of 400 drugs<br/>to your top 5 — in minutes.</div>
+    </div>
+    <div class="mockup-wrap reveal" style="border-color: rgba(0,212,170,.15);">
+      <div class="mockup-bar" style="background:#091413; border-color: rgba(0,212,170,.1);">
+        <span class="mb-dot mb-r"></span><span class="mb-dot mb-y"></span><span class="mb-dot mb-g"></span>
+        <span class="mb-title">Kairos · Generic Entry Radar — Patent Cliff Monitor · Live OpenFDA data</span>
+      </div>
+      <div class="mockup-body">
+        <div class="gen-mockup">
+          <!-- sidebar -->
+          <div class="gen-sidebar">
+            <div style="padding:16px 16px 8px; font-size:9px;color:var(--text-3);font-weight:700;letter-spacing:1px;text-transform:uppercase;">Navigation</div>
+            <div class="gps-item"><span>📡</span>&nbsp; Generic Entry Radar</div>
+            <div class="gps-item active" style="border-left-color:var(--teal);"><span>📉</span>&nbsp; Patent Cliff Monitor</div>
+            <div class="gps-item"><span>🔬</span>&nbsp; Drug Dossier</div>
+            <div class="gps-item"><span>⚗️</span>&nbsp; API Complexity</div>
+            <div class="gps-item"><span>💊</span>&nbsp; BE Predictor</div>
+            <div style="padding:14px 16px 8px; margin-top:8px; font-size:9px;color:var(--text-3);font-weight:700;letter-spacing:1px;text-transform:uppercase;">Data Sources</div>
+            <div class="gps-item" style="font-size:11px;"><span style="color:var(--green);font-size:9px;">●</span>&nbsp; OpenFDA · Live</div>
+            <div class="gps-item" style="font-size:11px;"><span style="color:var(--green);font-size:9px;">●</span>&nbsp; CMS Part D · 2024</div>
+            <div class="gps-item" style="font-size:11px;"><span style="color:var(--green);font-size:9px;">●</span>&nbsp; Orange Book · Live</div>
+          </div>
+          <!-- main -->
+          <div class="gen-main">
+            <!-- top KPI cards -->
+            <div class="gen-top-cards">
+              <div class="gtc">
+                <div class="gtc-lbl">Revenue at Risk (5yr)</div>
+                <div class="gtc-val" style="color:var(--teal);">$32.4B</div>
+                <div class="gtc-sub">Kinase inhibitors · Patent expiring</div>
+              </div>
+              <div class="gtc">
+                <div class="gtc-lbl">Drugs Expiring (3yr)</div>
+                <div class="gtc-val" style="color:var(--amber);">14</div>
+                <div class="gtc-sub">File ANDA in next 18 months</div>
+              </div>
+              <div class="gtc">
+                <div class="gtc-lbl">Already Generic</div>
+                <div class="gtc-val" style="color:var(--text-2);">23</div>
+                <div class="gtc-sub">Monitor price erosion</div>
+              </div>
+              <div class="gtc">
+                <div class="gtc-lbl">Avg ANDA Filers</div>
+                <div class="gtc-val" style="color:var(--red);">8.3</div>
+                <div class="gtc-sub">Per molecule (HIGH competition)</div>
+              </div>
             </div>
-            <div class="product-metric">
-              <div class="pm-num" style="color: var(--accent-teal);">Live</div>
-              <div class="pm-label">OpenFDA ANDA Data</div>
+            <!-- patent cliff chart -->
+            <div class="cliff-plot">
+              <div class="cp-title">📉 Revenue at Risk by Patent Expiry Year</div>
+              <div class="cliff-chart">
+                <div class="cliff-bar" style="height:28%;background:rgba(0,212,170,.35);" title="2025 · $890M"></div>
+                <div class="cliff-bar" style="height:55%;background:rgba(0,212,170,.5);" title="2026 · $4.2B"></div>
+                <div class="cliff-bar" style="height:80%;background:rgba(0,212,170,.65);" title="2027 · $7.8B"></div>
+                <div class="cliff-bar" style="height:100%;background:var(--teal);" title="2028 · $12.1B"></div>
+                <div class="cliff-bar" style="height:85%;background:rgba(0,212,170,.7);" title="2029 · $8.3B"></div>
+                <div class="cliff-bar" style="height:40%;background:rgba(0,212,170,.4);" title="2030 · $3.6B"></div>
+                <div style="position:absolute;top:4px;right:8px;font-size:10px;color:var(--text-3);font-family:monospace;">Peak at 2028: $12.1B</div>
+              </div>
+              <div class="cliff-year-labels">
+                <span class="cyl">2025</span><span class="cyl">2026</span><span class="cyl">2027</span><span class="cyl">2028</span><span class="cyl">2029</span><span class="cyl">2030</span>
+              </div>
             </div>
-            <div class="product-metric">
-              <div class="pm-num" style="color: var(--accent-teal);">5yr</div>
-              <div class="pm-label">Patent Cliff Horizon</div>
+            <!-- radar table -->
+            <div class="radar-table">
+              <div class="rt-header">
+                <div class="rt-th">Drug · Indication</div>
+                <div class="rt-th">Patent Expiry</div>
+                <div class="rt-th">Rev ($M)</div>
+                <div class="rt-th">Opp. Score</div>
+                <div class="rt-th">Action</div>
+              </div>
+              <div class="rt-row">
+                <div>
+                  <div class="rt-drug">Ibrutinib · CLL</div>
+                  <div style="font-size:10.5px;color:var(--text-3);">BTK inhibitor · 3 ANDA filers</div>
+                </div>
+                <div class="rt-val">2027</div>
+                <div class="rt-val" style="color:var(--teal);">$9,200</div>
+                <div><span class="rt-score rs-high">92/100</span></div>
+                <div><span class="rt-action act-now">File Now</span></div>
+              </div>
+              <div class="rt-row">
+                <div>
+                  <div class="rt-drug">Osimertinib · NSCLC</div>
+                  <div style="font-size:10.5px;color:var(--text-3);">EGFR inhibitor · 5 ANDA filers</div>
+                </div>
+                <div class="rt-val">2028</div>
+                <div class="rt-val" style="color:var(--teal);">$5,400</div>
+                <div><span class="rt-score rs-high">87/100</span></div>
+                <div><span class="rt-action act-dev">Dev API</span></div>
+              </div>
+              <div class="rt-row">
+                <div>
+                  <div class="rt-drug">Acalabrutinib · MCL</div>
+                  <div style="font-size:10.5px;color:var(--text-3);">BTK inhibitor · 2 ANDA filers</div>
+                </div>
+                <div class="rt-val">2029</div>
+                <div class="rt-val" style="color:var(--amber);">$2,100</div>
+                <div><span class="rt-score rs-med">74/100</span></div>
+                <div><span class="rt-action act-dev">Dev API</span></div>
+              </div>
+              <div class="rt-row">
+                <div>
+                  <div class="rt-drug">Lorlatinib · ALK+ NSCLC</div>
+                  <div style="font-size:10.5px;color:var(--text-3);">ALK inhibitor · 11 ANDA filers</div>
+                </div>
+                <div class="rt-val">2027</div>
+                <div class="rt-val" style="color:var(--text-2);">$890</div>
+                <div><span class="rt-score rs-low">41/100</span></div>
+                <div><span class="rt-action act-watch">Monitor</span></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div style="display:flex; gap:14px; margin-top:40px;" class="reveal">
+      <a href="demo-generic.html" class="btn-teal" target="_blank">▶ Watch 2-Min Platform Demo</a>
+      <a href="#contact" class="btn-ghost">Talk to Our Team</a>
+    </div>
   </div>
 </section>
 
-<!-- ═════════════════════════════════ PROOF / NUMBERS ══ -->
-<section class="proof-strip" id="performance">
-  <div class="section-wrapper">
+<!-- ═══ PROOF STRIP ═══ -->
+<section id="proof" class="proof-strip">
+  <div class="wrap sec">
     <div class="proof-grid reveal">
       <div class="proof-item">
         <div class="proof-num">0.81</div>
-        <div class="proof-label">AUC-ROC on Phase 1 prediction — drug-level stratified, out-of-sample</div>
+        <div class="proof-lbl">AUC-ROC · Phase 1 prediction<br/>Drug-level stratified · out-of-sample</div>
       </div>
       <div class="proof-item">
-        <div class="proof-num">98%</div>
-        <div class="proof-label">Feature coverage across 12,773 clinical trials from ClinicalTrials.gov</div>
+        <div class="proof-num">12,773</div>
+        <div class="proof-lbl">Clinical trials analyzed<br/>2005–2024 · ClinicalTrials.gov</div>
       </div>
       <div class="proof-item">
-        <div class="proof-num">129</div>
-        <div class="proof-label">AI features per prediction — molecular, clinical, competitive, sponsor</div>
+        <div class="proof-num">$32B+</div>
+        <div class="proof-lbl">Kinase drug revenue<br/>tracked on patent cliff</div>
       </div>
       <div class="proof-item">
         <div class="proof-num">4</div>
-        <div class="proof-label">Live data sources: PubMed, FDA, OpenTargets, ClinicalTrials.gov API</div>
+        <div class="proof-lbl">Live data sources<br/>PubMed · FDA · OpenTargets · CMS</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═════════════════════════════════ PLATFORM / HOW IT WORKS ══ -->
-<section id="platform">
-  <div class="section-wrapper">
-    <div class="section-header reveal">
-      <div class="section-label">The Platform</div>
-      <h2 class="section-title">9 modules. One<br/>decision architecture.</h2>
-      <p class="section-subtitle">Every module is interconnected — a signal in the patent database surfaces in the eNPV model. A competitive density shift appears in the POS prediction. Nothing is siloed.</p>
+<!-- ═══ SUPPLY CHAIN ═══ -->
+<section id="supply" class="sec">
+  <div class="wrap">
+    <div class="hdr reveal">
+      <div class="lbl lbl-amber">Expanding · Supply Chain Intelligence</div>
+      <h2 class="h2">The same decision engine —<br/>applied to <span style="color:var(--amber);">procurement.</span></h2>
+      <p class="sub">Pharma supply chains run on opacity. Supplier qualification takes months. RFx runs in email threads. Spend benchmarks don't exist. We're building the intelligence layer the industry doesn't yet have.</p>
     </div>
-  </div>
-
-  <div style="max-width:1160px; margin: 0 auto; padding: 0 24px 100px;">
-    <div class="modules-grid reveal">
-      <div class="module-cell">
-        <div class="module-num">01 / CORE</div>
-        <div class="module-title">TPP Intelligence Hub</div>
-        <div class="module-desc">The flagship. Input a Target Product Profile. Get POS, competitive position, eNPV, risk flags, and a Go/No-Go decision in under 10 seconds.</div>
-        <span class="module-badge badge-core">Core Decision</span>
-      </div>
-      <div class="module-cell">
-        <div class="module-num">02 / CORE</div>
-        <div class="module-title">Trial POS Predictor</div>
-        <div class="module-desc">Full 129-feature prediction with confidence intervals. What-If protocol optimizer. Feature Inspector with full audit trail. NCT auto-fill from ClinicalTrials.gov ID.</div>
-        <span class="module-badge badge-core">Core Decision</span>
-      </div>
-      <div class="module-cell">
-        <div class="module-num">03 / CORE</div>
-        <div class="module-title">eNPV Calculator</div>
-        <div class="module-desc">Probability-weighted NPV with waterfall visualization. Sensitivity analysis on POS and revenue assumptions. Break-even threshold modeling. Audit-ready outputs.</div>
-        <span class="module-badge badge-core">Financial Model</span>
-      </div>
-      <div class="module-cell">
-        <div class="module-num">04 / INTELLIGENCE</div>
-        <div class="module-title">Company Pipeline Scanner</div>
-        <div class="module-desc">Scan any pharma company's entire kinase pipeline from a name. Live ClinicalTrials.gov API. POS predictions for every active program. Exportable intelligence reports.</div>
-        <span class="module-badge badge-intel">CI Intelligence</span>
-      </div>
-      <div class="module-cell">
-        <div class="module-num">05 / INTELLIGENCE</div>
-        <div class="module-title">Competitive Landscape</div>
-        <div class="module-desc">Competitive density map by kinase target × indication. Success rate benchmarks by phase and sponsor type. Know the battlefield before you enter it.</div>
-        <span class="module-badge badge-intel">CI Intelligence</span>
-      </div>
-      <div class="module-cell">
-        <div class="module-num">06 / INTELLIGENCE</div>
-        <div class="module-title">Program Explorer</div>
-        <div class="module-desc">2,639 drug-indication programs. Full phase lineage, sponsor history, trial count. Queryable in real time. The institutional memory of 25 years of kinase R&amp;D.</div>
-        <span class="module-badge badge-intel">CI Intelligence</span>
-      </div>
-      <div class="module-cell">
-        <div class="module-num">07 / GENERIC</div>
-        <div class="module-title">Generic Entry Radar</div>
-        <div class="module-desc">Scan all Phase 3 trials globally. Score each for ANDA viability: patent window, competition density, revenue potential, API complexity. Built for MSN, Sun, Cipla, Dr. Reddy's.</div>
-        <span class="module-badge badge-generic">Generic Strategy</span>
-      </div>
-      <div class="module-cell">
-        <div class="module-num">08 / GENERIC</div>
-        <div class="module-title">Patent Cliff Monitor</div>
-        <div class="module-desc">Live ANDA counts from OpenFDA. Revenue at risk by expiry year. API complexity scores. Opportunity scoring across the full kinase drug landscape. Updated in real time.</div>
-        <span class="module-badge badge-generic">Generic Strategy</span>
-      </div>
-      <div class="module-cell">
-        <div class="module-num">09 / GENERIC</div>
-        <div class="module-title">Drug Dossier Engine</div>
-        <div class="module-desc">Auto-generate a full intelligence dossier per molecule: BE literature, FDA warnings, DMF status, CMS revenue data, ANDA competition. One click. Print-ready.</div>
-        <span class="module-badge badge-generic">Generic Strategy</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════════════════ HOW IT WORKS ══ -->
-<section class="how-strip">
-  <div class="section-wrapper" style="padding: 0;">
-    <div class="steps-grid">
-      <div class="step-card reveal">
-        <div class="step-num">STEP 01</div>
-        <div class="step-title">Connect Your Data Sources</div>
-        <div class="step-desc">The platform pulls live from ClinicalTrials.gov, OpenFDA, PubMed, OpenTargets, and CMS Part D. No data pipeline to build. No ETL to maintain. Live by day one.</div>
-      </div>
-      <div class="step-card reveal">
-        <div class="step-num">STEP 02</div>
-        <div class="step-title">Input a Drug, Trial, or Program</div>
-        <div class="step-desc">Enter an NCT ID and auto-populate. Type a drug name and scan its universe. Input a TPP from your portfolio review template. The platform meets you where you are.</div>
-      </div>
-      <div class="step-card reveal">
-        <div class="step-num">STEP 03</div>
-        <div class="step-title">Run the Decision Engine</div>
-        <div class="step-desc">129 features computed in milliseconds. XGBoost models calibrated with isotonic regression. Confidence intervals surfaced. Competitive flags raised. eNPV calculated.</div>
-      </div>
-      <div class="step-card reveal">
-        <div class="step-num">STEP 04</div>
-        <div class="step-title">Act on the Output</div>
-        <div class="step-desc">PROCEED / REVIEW / RECONSIDER — with the evidence trail. Export an HTML intelligence report. Share the waterfall chart with your CFO. Bring the audit log to your Board.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════════════════ MODEL PERFORMANCE ══ -->
-<section>
-  <div class="section-wrapper">
-    <div class="section-header reveal">
-      <div class="section-label">Validated Performance</div>
-      <h2 class="section-title">Numbers that survive<br/>real scrutiny.</h2>
-      <p class="section-subtitle">Every model is validated on drug-level stratified splits — the same drug never appears in both training and test sets. This isn't overfitting. These numbers are defensible in due diligence.</p>
-    </div>
-
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
-      <div class="perf-wrapper reveal">
-        <div class="perf-header">
-          <div>
-            <div class="perf-header-title">Kinase POS Model Performance</div>
-            <div class="perf-header-sub">Drug-level stratified, out-of-sample validation · XGBoost + calibration</div>
-          </div>
-          <div class="live-dot">Validated</div>
-        </div>
-        <table class="perf-table">
-          <thead>
-            <tr>
-              <th>Phase</th>
-              <th>AUC-ROC</th>
-              <th>F1 Score</th>
-              <th>Trials</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="phase-badge phase-1">Phase 1</span></td>
-              <td>
-                <div class="auc-bar-wrap">
-                  <div class="auc-bar-track">
-                    <div class="auc-bar-fill" style="width:81%; background: var(--accent);"></div>
-                  </div>
-                  <span class="auc-val">0.81</span>
-                </div>
-              </td>
-              <td>0.81</td>
-              <td>3,213</td>
-            </tr>
-            <tr>
-              <td><span class="phase-badge phase-2">Phase 2</span></td>
-              <td>
-                <div class="auc-bar-wrap">
-                  <div class="auc-bar-track">
-                    <div class="auc-bar-fill" style="width:81%; background: var(--accent-2);"></div>
-                  </div>
-                  <span class="auc-val">0.81</span>
-                </div>
-              </td>
-              <td>0.69</td>
-              <td>4,051</td>
-            </tr>
-            <tr>
-              <td><span class="phase-badge phase-3">Phase 3</span></td>
-              <td>
-                <div class="auc-bar-wrap">
-                  <div class="auc-bar-track">
-                    <div class="auc-bar-fill" style="width:80%; background: var(--accent-teal);"></div>
-                  </div>
-                  <span class="auc-val">0.80+</span>
-                </div>
-              </td>
-              <td>0.80+</td>
-              <td>2,862</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- TERMINAL WIDGET -->
-      <div class="terminal-widget reveal">
-        <div class="terminal-bar">
-          <span class="t-dot t-red"></span>
-          <span class="t-dot t-yellow"></span>
-          <span class="t-dot t-green"></span>
-          <span class="terminal-title">kairos — prediction output</span>
-        </div>
-        <div class="terminal-body">
-          <div><span class="t-prompt">→</span> <span class="t-cmd">kairos.predict(drug="imatinib", indication="CML", phase=2)</span></div>
-          <div><span class="t-comment">  # Enriching with 4 live APIs...</span></div>
-          <div><span class="t-comment">  # PubMed: 17,891 publications found</span></div>
-          <div><span class="t-comment">  # FDA: Approved indication confirmed</span></div>
-          <div><span class="t-comment">  # OpenTargets: Genetic score 0.93 (STRONG)</span></div>
-          <div><span class="t-comment">  # Computing 129 features...</span></div>
-          <div>&nbsp;</div>
-          <div><span class="t-key">POS_Phase2:</span>  <span class="t-val">0.847</span></div>
-          <div><span class="t-key">CI_90pct:  </span>  <span class="t-val">[0.791, 0.903]</span></div>
-          <div><span class="t-key">eNPV:      </span>  <span class="t-val">$1.24B</span></div>
-          <div><span class="t-key">Comp_density:</span> <span class="t-warn">HIGH (41 trials, 12 active)</span></div>
-          <div><span class="t-key">Risk_flags:</span>  <span class="t-val">none critical</span></div>
-          <div>&nbsp;</div>
-          <div><span class="t-success">✓ DECISION: PROCEED</span></div>
-          <div><span class="t-comment">  Score: 87/100 · Generated: 3.2s</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════════════════ AUDIENCES ══ -->
-<section style="background: var(--bg-1); border-top: 1px solid var(--border);">
-  <div class="section-wrapper">
-    <div class="section-header reveal">
-      <div class="section-label">Built For</div>
-      <h2 class="section-title">Who uses Kairos.</h2>
-      <p class="section-subtitle">The platform is designed for the people who own the decision — not analysts building slides for them.</p>
-    </div>
-
-    <div class="audience-wrapper reveal">
-      <div class="audience-tabs">
-        <button class="audience-tab active" onclick="switchTab('cxo')">Pharma CXO</button>
-        <button class="audience-tab" onclick="switchTab('bd')">BD &amp; Licensing</button>
-        <button class="audience-tab" onclick="switchTab('generic')">Generic BD</button>
-        <button class="audience-tab" onclick="switchTab('investor')">PE / Investors</button>
-      </div>
-
-      <div id="tab-cxo" class="audience-content active">
-        <div class="audience-card">
-          <div class="audience-card-icon">🏥</div>
-          <div class="audience-card-title">Chief Scientific Officer / CMO</div>
-          <div class="audience-card-points">
-            <div class="audience-point">Portfolio review pre-work that used to take 2 weeks, done in 20 minutes. Every asset scored, ranked, and flagged — before the meeting starts.</div>
-            <div class="audience-point">Kill/advance signals 6–18 months earlier than conventional milestone reviews. Stop burning Phase 3 budget on programs the data already flagged in Phase 2.</div>
-            <div class="audience-point">Audit-ready decision rationale. Regulatory-defensible. When a Board asks why you advanced — or stopped — you have the model, the features, and the confidence interval.</div>
-          </div>
-        </div>
-        <div class="audience-card">
-          <div class="audience-card-icon">💼</div>
-          <div class="audience-card-title">Chief Strategy Officer / CFO</div>
-          <div class="audience-card-points">
-            <div class="audience-point">Science and finance aligned on the same model. The eNPV calculation uses the same POS the clinical team uses. No more disconnect between what R&D says and what Finance models.</div>
-            <div class="audience-point">Sensitivity analysis built in. Run the downside scenario — competitor enters, POS drops 10pp — and see the eNPV impact in 3 seconds. Stress test before you commit.</div>
-            <div class="audience-point">Board-ready outputs. Waterfall charts, break-even POS thresholds, and PROCEED/REVIEW/RECONSIDER — the language of governance, not of research.</div>
-          </div>
-        </div>
-      </div>
-
-      <div id="tab-bd" class="audience-content">
-        <div class="audience-card">
-          <div class="audience-card-icon">🔍</div>
-          <div class="audience-card-title">Business Development</div>
-          <div class="audience-card-points">
-            <div class="audience-point">First-screen any in-licensing target in under 2 minutes. POS, competitive landscape, eNPV — all before your first NDA call with the target company.</div>
-            <div class="audience-point">Scan competitor pipelines by company name. See every Phase 2 and Phase 3 program AstraZeneca, Novartis, or Pfizer is running in kinase. Real-time, from ClinicalTrials.gov.</div>
-            <div class="audience-point">Patent cliff intelligence for out-licensing windows. Know which of your approved assets will face generic competition in 3–5 years — and price your deals accordingly.</div>
-          </div>
-        </div>
-        <div class="audience-card">
-          <div class="audience-card-icon">📊</div>
-          <div class="audience-card-title">VP Clinical Operations</div>
-          <div class="audience-card-points">
-            <div class="audience-point">Protocol optimization in 3 seconds. The What-If engine ranks every design lever — site count, masking, DMC, enrollment — by POS impact. Quantified, not anecdotal.</div>
-            <div class="audience-point">NCT auto-fill eliminates manual data entry. Paste a ClinicalTrials.gov ID. All 129 features populate automatically. No spreadsheet, no analyst, no lag.</div>
-            <div class="audience-point">Comparable trial benchmarks automatically surfaced. Design your Phase 2 against the historical distribution of trials that succeeded in the same indication.</div>
-          </div>
-        </div>
-      </div>
-
-      <div id="tab-generic" class="audience-content">
-        <div class="audience-card">
-          <div class="audience-card-icon">🏭</div>
-          <div class="audience-card-title">Generic Pharma BD Teams</div>
-          <div class="audience-card-points">
-            <div class="audience-point">ANDA prioritization backed by live data. Patent expiry, ANDA competition count from OpenFDA, revenue-at-risk from CMS — all scored into a single opportunity ranking.</div>
-            <div class="audience-point">API synthesis complexity before you commit to a development program. RDKit molecular analysis + published process chemistry = make-or-buy clarity in one screen.</div>
-            <div class="audience-point">Bioequivalence complexity prediction from molecular properties. Understand study burden before the budget is allocated. Built for MSN Labs, Sun Pharma, Cipla, Dr. Reddy's.</div>
-          </div>
-        </div>
-        <div class="audience-card">
-          <div class="audience-card-icon">📈</div>
-          <div class="audience-card-title">Generic Portfolio Strategy</div>
-          <div class="audience-card-points">
-            <div class="audience-point">5-year patent cliff horizon with revenue projections. Know exactly which $32B+ in kinase drug revenues are entering the generic window — and when first-to-file matters.</div>
-            <div class="audience-point">Price erosion forecasting using NADAC data and ANDA velocity. Model the revenue curve after market entry — not after you've already invested in the API.</div>
-            <div class="audience-point">Emerging market commercializability scores. Rank new products for markets beyond US/EU before committing regulatory and manufacturing resources across geographies.</div>
-          </div>
-        </div>
-      </div>
-
-      <div id="tab-investor" class="audience-content">
-        <div class="audience-card">
-          <div class="audience-card-icon">💰</div>
-          <div class="audience-card-title">Private Equity / Growth Investors</div>
-          <div class="audience-card-points">
-            <div class="audience-point">IRR-defensible diligence infrastructure. AUC 0.81 on drug-level stratified validation — the kind of number that survives LP scrutiny and partner-level review.</div>
-            <div class="audience-point">Proprietary data moat. The training set, feature engineering pipeline, and calibration logic are not available from any commercial data vendor. This is built IP.</div>
-            <div class="audience-point">Platform plays both sides of pharma. Innovative pipeline risk assessment AND generic market entry strategy — two revenue pools, one infrastructure investment.</div>
-          </div>
-        </div>
-        <div class="audience-card">
-          <div class="audience-card-icon">📉</div>
-          <div class="audience-card-title">Pharma Asset Investors / Royalty Funds</div>
-          <div class="audience-card-points">
-            <div class="audience-point">Consistent, reproducible valuation model. Every asset valued with the same XGBoost POS engine the clinical team uses. No analyst discretion. No model drift when headcount changes.</div>
-            <div class="audience-point">Patent cliff risk surfaced in the financial model. The eNPV calculation reflects ANDA competition counts and generic entry timelines — not just rosy revenue assumptions.</div>
-            <div class="audience-point">Cross-portfolio screening at scale. Batch predictions on an entire asset portfolio in minutes. Identify undervalued assets and overpriced risks before the deal closes.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═════════════════════════════════ SUPPLY CHAIN ══ -->
-<section id="supply-chain">
-  <div class="section-wrapper">
-    <div class="section-header reveal">
-      <div class="section-label">Expanding to Supply Chain</div>
-      <h2 class="section-title">Decision intelligence<br/>meets procurement.</h2>
-      <p class="section-subtitle">The same architecture that eliminates billion-dollar clinical mistakes is being extended to pharma procurement — where opacity costs the industry $40B+ annually in suboptimal sourcing decisions.</p>
-    </div>
-
     <div class="supply-split">
-      <div class="supply-capabilities reveal">
-        <div class="supply-cap-item">
-          <div class="supply-cap-icon">🔎</div>
+      <div class="supply-caps reveal">
+        <div class="sc-item">
+          <div class="sc-icon">🔎</div>
           <div>
-            <div class="supply-cap-title">Supplier Discovery &amp; Qualification Intelligence</div>
-            <div class="supply-cap-desc">The pharma API supplier landscape is fragmented, opaque, and slow to navigate. Kairos applies the same data aggregation architecture — FDA warning history, DMF status, GMP compliance records — to surface qualified suppliers before your procurement team makes 40 cold calls.</div>
-            <span class="supply-coming-soon">⬡ Coming 2026 · In Development</span>
+            <div class="sc-t">Supplier Discovery &amp; Qualification</div>
+            <div class="sc-d">FDA warning history, DMF status, GMP compliance records — aggregated into a ranked supplier shortlist. What used to take 40 cold calls now takes one query.</div>
+            <span class="soon">⬡ In Development · 2026</span>
           </div>
         </div>
-        <div class="supply-cap-item">
-          <div class="supply-cap-icon">📋</div>
+        <div class="sc-item">
+          <div class="sc-icon">📋</div>
           <div>
-            <div class="supply-cap-title">RFx Automation &amp; Spend Intelligence</div>
-            <div class="supply-cap-desc">Most pharma procurement teams still run RFPs in email threads and score responses in spreadsheets. Kairos will bring structured evaluation frameworks, AI-assisted scoring, and spend benchmarking — turning a 3-month sourcing cycle into a 3-week decision.</div>
-            <span class="supply-coming-soon">⬡ Coming 2026 · In Development</span>
+            <div class="sc-t">RFx Automation &amp; Spend Intelligence</div>
+            <div class="sc-d">Structured evaluation frameworks, AI-assisted scoring, and spend benchmarking. Turn a 3-month sourcing cycle into a 3-week decision backed by market data, not relationship memory.</div>
+            <span class="soon">⬡ In Development · 2026</span>
           </div>
         </div>
-        <div class="supply-cap-item">
-          <div class="supply-cap-icon">💡</div>
+        <div class="sc-item">
+          <div class="sc-icon">⚖️</div>
           <div>
-            <div class="supply-cap-title">Strategic Procurement Modeling</div>
-            <div class="supply-cap-desc">Risk-adjusted total cost of ownership. Supplier concentration risk scoring. Geopolitical sourcing exposure — quantified, not flagged as a footnote. The same eNPV architecture applied to make-vs-buy and single-vs-multi source decisions.</div>
-            <span class="supply-coming-soon">⬡ Roadmap · H2 2026</span>
+            <div class="sc-t">Risk-Adjusted Total Cost of Ownership</div>
+            <div class="sc-d">Supplier concentration risk, geopolitical sourcing exposure, make-vs-buy modeling — quantified. The same eNPV architecture applied to procurement decisions that move $100M+.</div>
+            <span class="soon">⬡ Roadmap · H2 2026</span>
           </div>
         </div>
       </div>
-
-      <div class="supply-visual reveal">
-        <div style="margin-bottom:28px;">
-          <div class="section-label" style="margin-bottom:8px;">The procurement decision gap</div>
-          <div style="font-size:14px; color: var(--text-2); line-height: 1.6;">Pharma procurement still runs on intuition, relationships, and delayed information. We're building the intelligence layer that's been missing.</div>
+      <div class="supply-vis reveal">
+        <div style="margin-bottom:24px;">
+          <div class="lbl lbl-amber" style="margin-bottom:8px;">The procurement gap</div>
+          <div style="font-size:13.5px;color:var(--text-2);line-height:1.65;">$40B+ is lost annually to suboptimal pharma sourcing decisions. The intelligence layer has been missing. Until now.</div>
         </div>
-        <div class="supply-nodes">
-          <div class="supply-node">
-            <div class="supply-node-icon">🏗️</div>
-            <div>
-              <div class="supply-node-text">API Supplier Network</div>
-              <div class="supply-node-sub">FDA DMF filings · GMP records · Warning letters</div>
-            </div>
-          </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="supply-node"><div class="sn-icon">🏗️</div><div><div class="sn-t">API Supplier Network</div><div class="sn-s">FDA DMF · GMP records · Warning letters · ANDA history</div></div></div>
           <div class="supply-arrow">↓</div>
-          <div class="supply-node">
-            <div class="supply-node-icon">⚖️</div>
-            <div>
-              <div class="supply-node-text">Risk-Adjusted Scoring Engine</div>
-              <div class="supply-node-sub">Quality · Compliance · Concentration risk · Cost</div>
-            </div>
-          </div>
+          <div class="supply-node"><div class="sn-icon">⚖️</div><div><div class="sn-t">Risk-Adjusted Scoring Engine</div><div class="sn-s">Quality · Compliance · Concentration risk · Price benchmarks</div></div></div>
           <div class="supply-arrow">↓</div>
-          <div class="supply-node">
-            <div class="supply-node-icon">📊</div>
-            <div>
-              <div class="supply-node-text">Spend Intelligence Layer</div>
-              <div class="supply-node-sub">Benchmark pricing · RFx automation · Cycle time</div>
-            </div>
-          </div>
+          <div class="supply-node"><div class="sn-icon">📋</div><div><div class="sn-t">RFx Automation Layer</div><div class="sn-s">Structured evaluation · AI scoring · Cycle time reduction</div></div></div>
           <div class="supply-arrow">↓</div>
-          <div class="supply-node" style="border-color: rgba(245,158,11,0.3);">
-            <div class="supply-node-icon">✅</div>
-            <div>
-              <div class="supply-node-text">Sourcing Decision Output</div>
-              <div class="supply-node-sub">Ranked suppliers · TCO model · Risk report</div>
-            </div>
-          </div>
+          <div class="supply-node" style="border-color:rgba(245,158,11,.3);"><div class="sn-icon">✅</div><div><div class="sn-t">Procurement Decision Output</div><div class="sn-s">Ranked suppliers · TCO model · Risk report · Audit trail</div></div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═════════════════════════════════ CTA ══ -->
-<section class="cta-section" id="contact">
+<!-- ═══ CTA ═══ -->
+<section class="cta-sec" id="contact">
   <div class="cta-inner reveal">
-    <h2>
-      See a<br/>
-      <span style="background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">live demo.</span>
-    </h2>
-    <p>
-      Walk through the platform with a drug your team is actively evaluating.
-      Bring the program. We'll show you the POS, the competitive landscape,
-      and the eNPV — in under 20 minutes.
-    </p>
-    <div class="cta-actions">
-      <a href="mailto:contact@kairosintelligence.ai" class="btn-primary">Request a Demo →</a>
+    <h2>Ready to see a <span class="grad-blue">live demo?</span></h2>
+    <p>Bring a drug your team is actively evaluating. We'll walk through the POS, the competitive landscape, and the ANDA opportunity — in under 20 minutes.</p>
+    <div class="cta-btns">
+      <a href="mailto:contact@kairosintelligence.ai" class="btn-p">Request Demo →</a>
       <a href="mailto:contact@kairosintelligence.ai" class="btn-ghost">Talk to the Team</a>
     </div>
-    <div class="cta-note">For pharma companies, PE funds, and generic BD teams. No commitment required.</div>
+    <div class="cta-note">For innovative pharma, generic BD teams, and PE investors. No commitment required.</div>
   </div>
 </section>
 
-<!-- ═════════════════════════════════ FOOTER ══ -->
+<!-- ═══ FOOTER ═══ -->
 <footer>
   <div class="footer-grid">
     <div>
-      <a href="#" class="nav-logo" style="display:inline-flex;">
-        <div class="nav-logo-mark">K</div>
-        Kairos Intelligence
-      </a>
-      <p class="footer-brand-desc">Decision Intelligence Platform for pharma's highest-stakes choices. Built for the decisions that cost $1B+ when wrong.</p>
+      <a href="#" class="nav-logo"><div class="logo-mark">K</div>Kairos Intelligence</a>
+      <p class="footer-desc">Decision Intelligence Platform for pharma's highest-stakes choices. Two products. One architecture. Zero guesswork.</p>
     </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Products</div>
-      <a href="#products">Kinase Intelligence Platform</a>
-      <a href="#products">Portfolio Decision Platform</a>
-      <a href="#supply-chain">Supply Chain Intelligence</a>
+    <div class="fc">
+      <div class="fc-title">Innovative Pharma</div>
+      <a href="#innovative">Trial POS Predictor</a>
+      <a href="#innovative">eNPV Calculator</a>
+      <a href="#innovative">What-If Optimizer</a>
+      <a href="#innovative">Competitive Landscape</a>
     </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Platform</div>
-      <a href="#platform">9 Modules</a>
-      <a href="#performance">Model Performance</a>
-      <a href="#platform">How It Works</a>
+    <div class="fc">
+      <div class="fc-title">Generic Pharma</div>
+      <a href="#generic">Generic Entry Radar</a>
+      <a href="#generic">Patent Cliff Monitor</a>
+      <a href="#generic">Drug Dossier Engine</a>
+      <a href="#generic">API Complexity Scorer</a>
     </div>
-    <div class="footer-col">
-      <div class="footer-col-title">Company</div>
+    <div class="fc">
+      <div class="fc-title">Company</div>
+      <a href="#supply">Supply Chain (2026)</a>
+      <a href="#proof">Validated Performance</a>
       <a href="#contact">Request Demo</a>
       <a href="mailto:contact@kairosintelligence.ai">Contact</a>
     </div>
   </div>
   <div class="footer-bottom">
     <span>© 2026 Kairos Intelligence. All rights reserved.</span>
-    <div class="footer-bottom-right">
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-    </div>
+    <div class="fb-right"><a href="#">Privacy</a><a href="#">Terms</a></div>
   </div>
 </footer>
 
-<!-- ═════════════════════════════════ SCRIPTS ══ -->
 <script>
-// ── GRID CANVAS ──────────────────────────────────────────────────
-(function() {
-  const canvas = document.getElementById('grid-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, cols, rows;
-
-  function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-    cols = Math.ceil(W / 60) + 1;
-    rows = Math.ceil(H / 60) + 1;
+// GRID CANVAS
+(()=>{
+  const c=document.getElementById('gc'),x=c.getContext('2d');
+  let W,H;
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight;}
+  function draw(){
+    x.clearRect(0,0,W,H);
+    x.strokeStyle='rgba(79,142,247,0.11)';x.lineWidth=.5;
+    const g=64;
+    for(let i=0;i<=Math.ceil(W/g)+1;i++){x.beginPath();x.moveTo(i*g,0);x.lineTo(i*g,H);x.stroke();}
+    for(let j=0;j<=Math.ceil(H/g)+1;j++){x.beginPath();x.moveTo(0,j*g);x.lineTo(W,j*g);x.stroke();}
+    x.fillStyle='rgba(79,142,247,0.22)';
+    for(let i=0;i<=Math.ceil(W/g)+1;i+=4)for(let j=0;j<=Math.ceil(H/g)+1;j+=4){x.beginPath();x.arc(i*g,j*g,1.4,0,Math.PI*2);x.fill();}
   }
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    ctx.strokeStyle = 'rgba(79,142,247,0.12)';
-    ctx.lineWidth = 0.5;
-    const gap = 60;
-    for (let x = 0; x <= cols; x++) {
-      ctx.beginPath();
-      ctx.moveTo(x * gap, 0);
-      ctx.lineTo(x * gap, H);
-      ctx.stroke();
-    }
-    for (let y = 0; y <= rows; y++) {
-      ctx.beginPath();
-      ctx.moveTo(0, y * gap);
-      ctx.lineTo(W, y * gap);
-      ctx.stroke();
-    }
-    // Glow dots at intersections (sparse)
-    ctx.fillStyle = 'rgba(79,142,247,0.25)';
-    for (let x = 0; x <= cols; x += 3) {
-      for (let y = 0; y <= rows; y += 3) {
-        ctx.beginPath();
-        ctx.arc(x * gap, y * gap, 1.5, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-  }
-
-  resize();
-  draw();
-  window.addEventListener('resize', () => { resize(); draw(); });
+  resize();draw();
+  window.addEventListener('resize',()=>{resize();draw();});
 })();
 
-// ── SCROLL REVEAL ──────────────────────────────────────────────────
-(function() {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+// SCROLL REVEAL
+(()=>{
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');}),{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 })();
 
-// ── AUDIENCE TABS ──────────────────────────────────────────────────
-function switchTab(id) {
-  document.querySelectorAll('.audience-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.audience-content').forEach(c => c.classList.remove('active'));
-  const tabs = document.querySelectorAll('.audience-tab');
-  const map = ['cxo','bd','generic','investor'];
-  const idx = map.indexOf(id);
-  if (idx >= 0) tabs[idx].classList.add('active');
-  const content = document.getElementById('tab-' + id);
-  if (content) content.classList.add('active');
-}
-
-// ── NUMBER COUNTER ANIMATION ──────────────────────────────────────
-(function() {
-  const elements = document.querySelectorAll('.proof-num, .hero-metric-num');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting && !e.target.dataset.animated) {
-        e.target.dataset.animated = '1';
-        // subtle fade-in scale
-        e.target.style.transform = 'scale(0.9)';
-        e.target.style.transition = 'transform 0.4s ease';
-        requestAnimationFrame(() => {
-          e.target.style.transform = 'scale(1)';
-        });
+// NAV ACTIVE LINKS
+(()=>{
+  const secs=document.querySelectorAll('section[id]');
+  const links=document.querySelectorAll('.nav-links a[href^="#"]');
+  const io=new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.style.color='');
+        const l=document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+        if(l)l.style.color='var(--blue)';
       }
     });
-  }, { threshold: 0.5 });
-  elements.forEach(el => obs.observe(el));
-})();
-
-// ── SMOOTH NAV ACTIVE ──────────────────────────────────────────────
-(function() {
-  const sections = document.querySelectorAll('section[id]');
-  const links = document.querySelectorAll('.nav-links a');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        links.forEach(l => l.style.color = '');
-        const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
-        if (link) link.style.color = 'var(--accent)';
-      }
-    });
-  }, { threshold: 0.5 });
-  sections.forEach(s => obs.observe(s));
+  },{threshold:.4});
+  secs.forEach(s=>io.observe(s));
 })();
 </script>
 </body>
