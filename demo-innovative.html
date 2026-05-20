@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kinase Intelligence Platform — Live Demo | Kairos Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #4f8ef7;
+    --blue2: #7c5cff;
+    --bg: #08090d;
+    --bg2: #0f1117;
+    --bg3: #161822;
+    --border: rgba(79,142,247,0.18);
+    --text: #e8eaf0;
+    --muted: #7a8094;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --red: #ef4444;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; overflow:hidden; height:100vh; width:100vw; user-select:none; }
+
+  #progress-bar { position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--blue),var(--blue2)); width:0%; transition:width 0.1s linear; z-index:100; box-shadow:0 0 12px var(--blue); }
+
+  #hud { position:fixed; top:16px; left:0; right:0; display:flex; align-items:center; justify-content:space-between; padding:0 28px; z-index:90; pointer-events:none; }
+  #hud .brand { font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--blue); pointer-events:all; text-decoration:none; }
+  #hud .chapter-label { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; background:rgba(15,17,23,0.85); padding:4px 12px; border-radius:20px; border:1px solid var(--border); }
+  #hud .slide-counter { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted); pointer-events:all; cursor:pointer; }
+
+  #dots { position:fixed; right:20px; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:8px; z-index:90; }
+  .dot { width:6px; height:6px; border-radius:50%; background:var(--muted); opacity:0.4; cursor:pointer; transition:all 0.3s; }
+  .dot.active { opacity:1; background:var(--blue); transform:scale(1.5); box-shadow:0 0 8px var(--blue); }
+
+  #controls { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:12px; z-index:90; background:rgba(15,17,23,0.9); border:1px solid var(--border); border-radius:40px; padding:8px 20px; backdrop-filter:blur(12px); }
+  #controls button { background:none; border:none; color:var(--muted); font-size:18px; cursor:pointer; padding:4px 8px; border-radius:6px; transition:color 0.2s; }
+  #controls button:hover { color:var(--text); background:rgba(79,142,247,0.12); }
+  #controls .time-left { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); min-width:36px; text-align:center; }
+  #controls .sep { color:var(--border); font-size:20px; }
+
+  #stage { width:100vw; height:100vh; position:relative; overflow:hidden; }
+  .slide { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.6s ease; pointer-events:none; }
+  .slide.active { opacity:1; pointer-events:all; }
+  .slide-inner { width:100%; max-width:960px; padding:80px 40px; position:relative; z-index:2; }
+
+  .eyebrow { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--blue); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .eyebrow::before { content:''; display:inline-block; width:20px; height:1px; background:var(--blue); }
+  h1.hero-title { font-size:clamp(44px,6vw,80px); font-weight:900; line-height:1.04; letter-spacing:-0.03em; margin-bottom:24px; color:#fff; }
+  h2.slide-title { font-size:clamp(28px,4vw,48px); font-weight:800; line-height:1.1; letter-spacing:-0.025em; margin-bottom:16px; color:#fff; }
+  .slide-sub { font-size:16px; color:var(--muted); line-height:1.65; max-width:620px; }
+
+  /* Slide 1 */
+  #slide-1::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 50% at 50% 60%,rgba(79,142,247,0.08) 0%,transparent 70%); }
+  .cold-open-stats { display:flex; gap:60px; margin-top:48px; }
+  .cold-stat .num { font-size:80px; font-weight:900; letter-spacing:-0.04em; line-height:1; }
+  .cold-stat .num.red { color:var(--red); }
+  .cold-stat .num.amber { color:var(--amber); }
+  .cold-stat .desc { font-size:14px; color:var(--muted); margin-top:8px; max-width:200px; }
+  .cold-tagline { margin-top:56px; font-size:22px; font-weight:600; color:var(--text); border-left:3px solid var(--blue); padding-left:20px; line-height:1.5; }
+
+  /* Slide 2 */
+  #slide-2::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 40% 60% at 70% 40%,rgba(124,92,255,0.07) 0%,transparent 70%); }
+  .platform-layout { display:grid; grid-template-columns:200px 1fr; gap:24px; margin-top:32px; }
+  .platform-sidebar { background:var(--bg3); border:1px solid var(--border); border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:4px; }
+  .sidebar-item { padding:8px 12px; border-radius:8px; font-size:11px; font-weight:600; color:var(--muted); display:flex; align-items:center; gap:8px; }
+  .sidebar-item.active { background:rgba(79,142,247,0.12); color:var(--blue); border:1px solid rgba(79,142,247,0.25); }
+  .sidebar-dot { width:6px; height:6px; border-radius:50%; background:currentColor; flex-shrink:0; }
+  .sidebar-label { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.05em; }
+  .platform-right { display:flex; flex-direction:column; gap:16px; }
+  .plat-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .plat-stat { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; }
+  .plat-stat .n { font-size:24px; font-weight:800; color:var(--blue); }
+  .plat-stat .l { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-top:4px; }
+  .card { background:var(--bg3); border:1px solid var(--border); border-radius:12px; padding:20px 24px; }
+  .card.accent-blue { border-color:rgba(79,142,247,0.4); }
+  .card-title { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--blue); margin-bottom:8px; font-family:'JetBrains Mono',monospace; }
+  .tag { display:inline-block; padding:3px 10px; border-radius:5px; font-size:11px; font-family:'JetBrains Mono',monospace; font-weight:600; background:rgba(79,142,247,0.12); color:var(--blue); border:1px solid rgba(79,142,247,0.2); margin-right:4px; margin-bottom:4px; }
+
+  /* Slide 3 */
+  .tpp-layout { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:28px; }
+  .tpp-left { display:flex; flex-direction:column; gap:16px; }
+  .drug-card { background:var(--bg3); border:1px solid var(--border); border-radius:12px; padding:20px; }
+  .drug-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+  .drug-name { font-size:18px; font-weight:700; color:#fff; }
+  .drug-target { font-size:11px; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-top:2px; }
+  .proceed-badge { background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.4); color:var(--green); font-size:12px; font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:0.06em; }
+  .gauge-wrap { display:flex; flex-direction:column; align-items:center; margin-bottom:12px; }
+  .gauge-label { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); margin-top:4px; }
+  .risk-flags { display:flex; flex-wrap:wrap; gap:8px; }
+  .flag { font-size:11px; padding:4px 10px; border-radius:6px; font-family:'JetBrains Mono',monospace; font-weight:600; }
+  .flag.green { background:rgba(34,197,94,0.12); color:var(--green); border:1px solid rgba(34,197,94,0.25); }
+  .flag.amber { background:rgba(245,158,11,0.12); color:var(--amber); border:1px solid rgba(245,158,11,0.25); }
+  .flag.red { background:rgba(239,68,68,0.12); color:var(--red); border:1px solid rgba(239,68,68,0.25); }
+  .tpp-right { display:flex; flex-direction:column; gap:12px; }
+  .metric-row { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; }
+  .metric-key { font-size:12px; color:var(--muted); }
+  .metric-val { font-size:18px; font-weight:700; color:#fff; }
+
+  /* Slide 4 */
+  .whatif-table { margin-top:28px; display:flex; flex-direction:column; gap:10px; }
+  .wi-row { display:grid; grid-template-columns:220px 1fr 80px; gap:12px; align-items:center; background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:14px 18px; }
+  .wi-row.positive { border-color:rgba(34,197,94,0.25); }
+  .wi-row.negative { border-color:rgba(239,68,68,0.2); }
+  .wi-label { font-size:13px; color:var(--text); }
+  .wi-bar-wrap { height:8px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden; }
+  .wi-bar { height:100%; border-radius:4px; }
+  .wi-bar.pos { background:linear-gradient(90deg,var(--green),#16a34a); }
+  .wi-bar.neg { background:linear-gradient(90deg,var(--red),#dc2626); float:right; }
+  .wi-delta { font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700; text-align:right; }
+  .wi-delta.pos { color:var(--green); }
+  .wi-delta.neg { color:var(--red); }
+  .wi-summary { margin-top:20px; background:rgba(79,142,247,0.08); border:1px solid rgba(79,142,247,0.3); border-radius:12px; padding:16px 24px; display:flex; justify-content:space-between; align-items:center; }
+  .wi-sum-label { font-size:13px; color:var(--muted); }
+  .wi-sum-val { font-size:22px; font-weight:800; color:var(--blue); }
+
+  /* Slide 5 */
+  .waterfall-wrap { display:grid; grid-template-columns:1fr 280px; gap:24px; margin-top:28px; }
+  .waterfall-chart { display:flex; flex-direction:column; gap:8px; }
+  .wf-row { display:grid; grid-template-columns:160px 1fr 80px; gap:10px; align-items:center; }
+  .wf-label { font-size:12px; color:var(--muted); }
+  .wf-bar-wrap { height:28px; background:rgba(255,255,255,0.04); border-radius:6px; overflow:hidden; }
+  .wf-bar { height:100%; border-radius:6px; }
+  .wf-bar.cost { background:linear-gradient(90deg,rgba(239,68,68,0.7),rgba(239,68,68,0.4)); }
+  .wf-bar.pos { background:linear-gradient(90deg,rgba(79,142,247,0.8),rgba(124,92,255,0.6)); }
+  .wf-bar.result { background:linear-gradient(90deg,var(--blue),var(--blue2)); }
+  .wf-val { font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:600; text-align:right; }
+  .wf-val.pos { color:var(--blue); }
+  .wf-val.neg { color:var(--red); }
+  .wf-val.result { color:#fff; font-size:16px; }
+  .waterfall-aside { display:flex; flex-direction:column; gap:12px; }
+  .aside-card { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:16px; }
+  .aside-title { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; font-family:'JetBrains Mono',monospace; margin-bottom:8px; }
+  .aside-val { font-size:22px; font-weight:800; color:#fff; }
+  .aside-sub { font-size:11px; color:var(--muted); margin-top:4px; }
+  .divider { height:1px; background:var(--border); margin:8px 0; }
+
+  /* Slide 6 */
+  .bubble-wrap { position:relative; margin-top:28px; background:var(--bg3); border:1px solid var(--border); border-radius:16px; padding:24px; overflow:hidden; }
+  .bubble-chart { position:relative; height:300px; }
+  .bubble { position:absolute; border-radius:50%; border:1px solid rgba(79,142,247,0.3); display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:10px; color:var(--muted); text-align:center; }
+  .bubble span { font-family:'JetBrains Mono',monospace; font-size:9px; }
+  .bubble-label { font-size:11px; font-weight:600; color:var(--text); margin-bottom:2px; }
+  .blur-tease { position:absolute; bottom:0; left:0; right:0; height:50%; background:linear-gradient(to bottom,transparent 0%,var(--bg3) 70%); display:flex; align-items:flex-end; justify-content:center; padding-bottom:14px; pointer-events:none; }
+  .tease-label { font-size:12px; color:var(--muted); font-family:'JetBrains Mono',monospace; letter-spacing:0.06em; text-transform:uppercase; }
+
+  /* Slide 7 */
+  .scanner-wrap { margin-top:24px; background:var(--bg3); border:1px solid var(--border); border-radius:14px; overflow:hidden; position:relative; }
+  .scanner-header { display:flex; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid var(--border); background:rgba(79,142,247,0.05); }
+  .company-badge { background:rgba(79,142,247,0.15); border:1px solid rgba(79,142,247,0.35); color:var(--blue); font-size:12px; font-weight:700; padding:4px 12px; border-radius:6px; font-family:'JetBrains Mono',monospace; }
+  .scanner-title { font-size:15px; font-weight:600; color:#fff; }
+  .scanner-sub { font-size:11px; color:var(--muted); margin-left:auto; }
+  .scanner-table { width:100%; border-collapse:collapse; }
+  .scanner-table th { font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; padding:10px 16px; text-align:left; border-bottom:1px solid var(--border); background:rgba(79,142,247,0.04); font-family:'JetBrains Mono',monospace; }
+  .scanner-table td { padding:10px 16px; font-size:12px; border-bottom:1px solid rgba(255,255,255,0.04); }
+  .pos-pill { display:inline-block; padding:2px 8px; border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; }
+  .pos-pill.high { background:rgba(34,197,94,0.15); color:var(--green); }
+  .pos-pill.mid { background:rgba(245,158,11,0.15); color:var(--amber); }
+  .pos-pill.low { background:rgba(239,68,68,0.15); color:var(--red); }
+  .scanner-blur { position:absolute; bottom:0; left:0; right:0; height:45%; background:linear-gradient(to bottom,transparent 0%,var(--bg3) 75%); display:flex; align-items:flex-end; justify-content:center; padding-bottom:12px; }
+
+  /* Slide 8 */
+  .prov-layout { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:28px; }
+  .prov-table-wrap { background:var(--bg3); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  .prov-table { width:100%; border-collapse:collapse; }
+  .prov-table th { font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); background:rgba(79,142,247,0.04); font-family:'JetBrains Mono',monospace; }
+  .prov-table td { padding:10px 14px; font-size:12px; border-bottom:1px solid rgba(255,255,255,0.04); font-family:'JetBrains Mono',monospace; }
+  .prov-table tr:last-child td { border-bottom:none; }
+  .auc-val { font-weight:700; color:var(--green); }
+  .prov-points { display:flex; flex-direction:column; gap:10px; }
+  .prov-point { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:14px 16px; display:flex; gap:12px; align-items:flex-start; }
+  .prov-icon { font-size:18px; flex-shrink:0; }
+  .prov-text { font-size:12px; color:var(--text); line-height:1.5; }
+  .prov-text strong { color:var(--blue); }
+
+  /* Slide 9 */
+  #slide-9::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(124,92,255,0.1) 0%,transparent 65%); }
+  .hook-stats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-top:36px; }
+  .hook-stat { background:var(--bg3); border:1px solid var(--border); border-radius:14px; padding:24px; text-align:center; }
+  .hook-stat.accent { border-color:rgba(124,92,255,0.4); background:rgba(124,92,255,0.05); }
+  .hook-num { font-size:42px; font-weight:900; color:#fff; letter-spacing:-0.02em; }
+  .hook-unit { font-size:20px; color:var(--blue2); }
+  .hook-lbl { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; margin-top:8px; }
+  .hook-line { margin-top:32px; padding:20px 28px; background:rgba(79,142,247,0.07); border:1px solid rgba(79,142,247,0.25); border-radius:12px; font-size:16px; font-weight:600; color:var(--text); line-height:1.5; text-align:center; }
+  .hook-line em { color:var(--blue2); font-style:normal; }
+
+  /* Slide 10 */
+  #slide-10::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(79,142,247,0.07) 0%,transparent 70%); }
+  .close-center { text-align:center; }
+  .close-btn { display:inline-block; padding:16px 40px; background:linear-gradient(135deg,var(--blue),var(--blue2)); color:#fff; font-size:15px; font-weight:700; border-radius:50px; text-decoration:none; letter-spacing:0.04em; box-shadow:0 4px 30px rgba(79,142,247,0.35); transition:all 0.3s; cursor:pointer; border:none; }
+  .close-proof { display:flex; justify-content:center; gap:32px; margin-top:36px; flex-wrap:wrap; }
+  .close-proof-item { font-size:13px; color:var(--muted); display:flex; align-items:center; gap:6px; }
+  .close-proof-item::before { content:'checkmark'; content:'\2713'; color:var(--blue); font-weight:700; }
+
+  /* Outro */
+  #outro { position:fixed; inset:0; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:200; opacity:0; pointer-events:none; transition:opacity 0.8s ease; text-align:center; padding:40px; }
+  #outro.visible { opacity:1; pointer-events:all; }
+  #outro::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(79,142,247,0.1) 0%,transparent 70%); }
+  .outro-brand { font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:0.2em; text-transform:uppercase; color:var(--blue); margin-bottom:16px; }
+  .outro-title { font-size:clamp(32px,5vw,60px); font-weight:900; color:#fff; letter-spacing:-0.03em; line-height:1.1; max-width:700px; margin-bottom:20px; }
+  .outro-title em { color:var(--blue2); font-style:normal; }
+  .outro-sub { font-size:16px; color:var(--muted); max-width:520px; margin-bottom:48px; line-height:1.6; }
+  .outro-stats { display:flex; gap:48px; margin-bottom:48px; background:var(--bg3); border:1px solid var(--border); border-radius:16px; padding:24px 40px; }
+  .outro-stat .n { font-size:32px; font-weight:900; color:var(--blue); }
+  .outro-stat .l { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; margin-top:4px; }
+  .outro-cta { display:inline-block; padding:18px 48px; background:linear-gradient(135deg,var(--blue),var(--blue2)); color:#fff; font-size:16px; font-weight:700; border-radius:50px; text-decoration:none; letter-spacing:0.04em; box-shadow:0 4px 30px rgba(79,142,247,0.4); transition:all 0.3s; margin-bottom:8px; }
+  .outro-cta:hover { transform:translateY(-3px); box-shadow:0 10px 50px rgba(79,142,247,0.55); }
+  .outro-back { display:block; font-size:12px; color:var(--muted); text-decoration:none; margin-top:12px; transition:color 0.2s; }
+  .outro-back:hover { color:var(--text); }
+  #keyboard-hint { position:fixed; bottom:64px; right:28px; font-size:11px; color:var(--muted); font-family:'JetBrains Mono',monospace; opacity:0.6; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<div id="hud">
+  <a href="index.html" class="brand">Kairos Intelligence</a>
+  <div class="chapter-label" id="chapter-label">KINASE INTELLIGENCE PLATFORM</div>
+  <div class="slide-counter" id="slide-counter" title="Click to pause/resume">1 / 10</div>
+</div>
+
+<div id="dots"></div>
+
+<div id="controls">
+  <button id="btn-prev" title="Previous">&#8592;</button>
+  <button id="btn-play" title="Play/Pause (Space)">&#10074;&#10074;</button>
+  <button id="btn-next" title="Next">&#8594;</button>
+  <div class="sep">|</div>
+  <div class="time-left" id="time-left">0s</div>
+</div>
+
+<div id="keyboard-hint">&#8592; &#8594; SPACE</div>
+
+<div id="stage">
+
+  <!-- SLIDE 1: COLD OPEN -->
+  <div class="slide active" id="slide-1" data-chapter="THE PROBLEM" data-duration="10">
+    <div class="slide-inner">
+      <div class="eyebrow">Kinase Intelligence Platform</div>
+      <h1 class="hero-title">Pharma bets billions<br>on gut instinct.</h1>
+      <div class="cold-open-stats">
+        <div class="cold-stat">
+          <div class="num red">$250B</div>
+          <div class="desc">Spent annually on drug R&D worldwide</div>
+        </div>
+        <div class="cold-stat">
+          <div class="num amber">90%</div>
+          <div class="desc">Phase 3 programs that fail to reach market</div>
+        </div>
+      </div>
+      <div class="cold-tagline">
+        Most decisions are made on experience, PowerPoints,<br>and committee consensus. Not data.
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: PLATFORM OVERVIEW -->
+  <div class="slide" id="slide-2" data-chapter="THE PLATFORM" data-duration="12">
+    <div class="slide-inner">
+      <div class="eyebrow">9-Module Decision Architecture</div>
+      <h2 class="slide-title">One platform.<br>Every go/no-go moment.</h2>
+      <div class="platform-layout">
+        <div class="platform-sidebar">
+          <div style="font-size:10px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;padding:6px 12px 10px;border-bottom:1px solid var(--border);margin-bottom:6px;">KIP Modules</div>
+          <div class="sidebar-item active"><div class="sidebar-dot"></div><div class="sidebar-label">TPP Intelligence Hub</div></div>
+          <div class="sidebar-item"><div class="sidebar-dot"></div><div class="sidebar-label">What-If Optimizer</div></div>
+          <div class="sidebar-item"><div class="sidebar-dot"></div><div class="sidebar-label">eNPV Waterfall</div></div>
+          <div class="sidebar-item"><div class="sidebar-dot"></div><div class="sidebar-label">Competitive Intel</div></div>
+          <div class="sidebar-item"><div class="sidebar-dot"></div><div class="sidebar-label">Company Scanner</div></div>
+          <div class="sidebar-item"><div class="sidebar-dot"></div><div class="sidebar-label">Trial Monitor</div></div>
+          <div class="sidebar-item"><div class="sidebar-dot"></div><div class="sidebar-label">BD Target Ranker</div></div>
+          <div class="sidebar-item"><div class="sidebar-dot"></div><div class="sidebar-label">Portfolio Optimizer</div></div>
+          <div class="sidebar-item"><div class="sidebar-dot"></div><div class="sidebar-label">Model Provenance</div></div>
+        </div>
+        <div class="platform-right">
+          <div class="plat-stats">
+            <div class="plat-stat"><div class="n">12,773</div><div class="l">Trials Indexed</div></div>
+            <div class="plat-stat"><div class="n">129</div><div class="l">AI Features</div></div>
+            <div class="plat-stat"><div class="n">0.81</div><div class="l">AUC-ROC</div></div>
+            <div class="plat-stat"><div class="n">3s</div><div class="l">Decision Time</div></div>
+          </div>
+          <div class="card accent-blue" style="flex:1">
+            <div class="card-title">Decision Coverage</div>
+            <div style="font-size:14px;color:var(--muted);line-height:1.7;margin-top:8px;">
+              From <span style="color:var(--blue);font-weight:600;">TPP scoring</span> and <span style="color:var(--blue);font-weight:600;">clinical POS</span> to <span style="color:var(--blue);font-weight:600;">eNPV modelling</span>, <span style="color:var(--blue);font-weight:600;">competitive positioning</span>, and <span style="color:var(--blue);font-weight:600;">BD deal analysis</span> &mdash; every high-stakes decision, unified.
+            </div>
+            <div style="margin-top:16px;">
+              <span class="tag">CXO Strategy</span>
+              <span class="tag">CSO Portfolio</span>
+              <span class="tag">BD&amp;L Teams</span>
+              <span class="tag">Investors</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: TPP HUB -->
+  <div class="slide" id="slide-3" data-chapter="TPP INTELLIGENCE" data-duration="14">
+    <div class="slide-inner">
+      <div class="eyebrow">Live Decision &mdash; Imatinib / CML</div>
+      <h2 class="slide-title">84.7% probability of success.<br>Decision in 3 seconds.</h2>
+      <div class="tpp-layout">
+        <div class="tpp-left">
+          <div class="drug-card">
+            <div class="drug-header">
+              <div>
+                <div class="drug-name">Imatinib (BCR-ABL)</div>
+                <div class="drug-target">CML &middot; Phase 2 &middot; Oncology</div>
+              </div>
+              <div class="proceed-badge">&#9679; PROCEED</div>
+            </div>
+            <div class="gauge-wrap">
+              <svg width="180" height="110" viewBox="0 0 180 110">
+                <defs>
+                  <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#4f8ef7"/>
+                    <stop offset="100%" style="stop-color:#22c55e"/>
+                  </linearGradient>
+                </defs>
+                <path d="M 20 95 A 70 70 0 0 1 160 95" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="12" stroke-linecap="round"/>
+                <path d="M 20 95 A 70 70 0 0 1 160 95" fill="none" stroke="url(#gaugeGrad)" stroke-width="12" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="34"/>
+                <text x="90" y="82" text-anchor="middle" font-family="Inter,sans-serif" font-size="28" font-weight="900" fill="white">84.7%</text>
+                <text x="90" y="100" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#7a8094">POS SCORE</text>
+                <text x="16" y="110" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a8094">0</text>
+                <text x="164" y="110" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#7a8094">100</text>
+              </svg>
+              <div class="gauge-label">AI-Predicted Clinical Probability of Success</div>
+            </div>
+            <div class="risk-flags">
+              <div class="flag green">&#10003; Strong Mechanism</div>
+              <div class="flag green">&#10003; Validated Biomarker</div>
+              <div class="flag amber">&#9888; Competitor in Ph3</div>
+              <div class="flag green">&#10003; Clean Safety Profile</div>
+              <div class="flag red">&#10007; Patent Window Tight</div>
+            </div>
+          </div>
+        </div>
+        <div class="tpp-right">
+          <div class="metric-row">
+            <div class="metric-key">eNPV (Risk-Adjusted)</div>
+            <div class="metric-val" style="color:var(--blue);">$1.24B</div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-key">Peak Revenue Estimate</div>
+            <div class="metric-val">$3.2B</div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-key">Development Cost</div>
+            <div class="metric-val" style="color:var(--red);">$820M</div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-key">Time to Market</div>
+            <div class="metric-val">7.2 years</div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-key">Comparable Programs</div>
+            <div class="metric-val">143 trials</div>
+          </div>
+          <div class="card accent-blue" style="margin-top:4px;">
+            <div class="card-title">AI Rationale</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.6;">Strong BCR-ABL inhibition data, validated biomarker strategy, and 87th percentile trial execution score. Main risk: IP cliff in 2031 with 2 competitors in Phase 3.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: WHAT-IF OPTIMIZER -->
+  <div class="slide" id="slide-4" data-chapter="WHAT-IF OPTIMIZER" data-duration="12">
+    <div class="slide-inner">
+      <div class="eyebrow">Scenario Modelling</div>
+      <h2 class="slide-title">Ask &ldquo;what changes if we<br>improve the trial design?&rdquo;</h2>
+      <p class="slide-sub" style="margin-bottom:0;">Adjust any parameter. The model re-prices the program in real time. No spreadsheets, no analysts &mdash; just decisions.</p>
+      <div class="whatif-table">
+        <div class="wi-row positive">
+          <div class="wi-label">Enrich patient selection (biomarker+)</div>
+          <div class="wi-bar-wrap"><div class="wi-bar pos" style="width:80%"></div></div>
+          <div class="wi-delta pos">+8pp POS</div>
+        </div>
+        <div class="wi-row positive">
+          <div class="wi-label">Add combination arm (chemo + targeted)</div>
+          <div class="wi-bar-wrap"><div class="wi-bar pos" style="width:60%"></div></div>
+          <div class="wi-delta pos">+6pp POS</div>
+        </div>
+        <div class="wi-row positive">
+          <div class="wi-label">Reduce trial size (adaptive design)</div>
+          <div class="wi-bar-wrap"><div class="wi-bar pos" style="width:40%"></div></div>
+          <div class="wi-delta pos">+4pp POS</div>
+        </div>
+        <div class="wi-row positive">
+          <div class="wi-label">Accelerate enrolment (add 12 sites)</div>
+          <div class="wi-bar-wrap"><div class="wi-bar pos" style="width:25%"></div></div>
+          <div class="wi-delta pos">+2.5pp POS</div>
+        </div>
+        <div class="wi-row negative">
+          <div class="wi-label">Remove biomarker requirement (all-comers)</div>
+          <div class="wi-bar-wrap"><div class="wi-bar neg" style="width:35%"></div></div>
+          <div class="wi-delta neg">&minus;3.5pp POS</div>
+        </div>
+      </div>
+      <div class="wi-summary">
+        <div>
+          <div class="wi-sum-label">Optimal scenario uplift</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Biomarker enrichment + adaptive design</div>
+        </div>
+        <div class="wi-sum-val">+12pp &rarr; 96.7% POS</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: eNPV WATERFALL -->
+  <div class="slide" id="slide-5" data-chapter="eNPV WATERFALL" data-duration="13">
+    <div class="slide-inner">
+      <div class="eyebrow">Risk-Adjusted Value Analysis</div>
+      <h2 class="slide-title">Every phase priced.<br>Every risk quantified.</h2>
+      <div class="waterfall-wrap">
+        <div class="waterfall-chart">
+          <div class="wf-row">
+            <div class="wf-label">Peak Revenue (risk-adj.)</div>
+            <div class="wf-bar-wrap"><div class="wf-bar pos" style="width:100%"></div></div>
+            <div class="wf-val pos">+$3,200M</div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-label">Phase 1 Cost</div>
+            <div class="wf-bar-wrap"><div class="wf-bar cost" style="width:9%"></div></div>
+            <div class="wf-val neg">&minus;$75M</div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-label">Phase 2 Cost</div>
+            <div class="wf-bar-wrap"><div class="wf-bar cost" style="width:18%"></div></div>
+            <div class="wf-val neg">&minus;$200M</div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-label">Phase 3 Cost</div>
+            <div class="wf-bar-wrap"><div class="wf-bar cost" style="width:45%"></div></div>
+            <div class="wf-val neg">&minus;$545M</div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-label">COGS + Launch</div>
+            <div class="wf-bar-wrap"><div class="wf-bar cost" style="width:10%"></div></div>
+            <div class="wf-val neg">&minus;$110M</div>
+          </div>
+          <div class="divider"></div>
+          <div class="wf-row">
+            <div class="wf-label" style="font-weight:700;color:#fff;">eNPV (10% discount)</div>
+            <div class="wf-bar-wrap"><div class="wf-bar result" style="width:75%"></div></div>
+            <div class="wf-val result">$1,240M</div>
+          </div>
+        </div>
+        <div class="waterfall-aside">
+          <div class="aside-card">
+            <div class="aside-title">Break-Even POS</div>
+            <div class="aside-val">32%</div>
+            <div class="aside-sub">Current: 84.7% &mdash; 2.6&times; above threshold</div>
+          </div>
+          <div class="aside-card">
+            <div class="aside-title">Portfolio IRR</div>
+            <div class="aside-val">34.2%</div>
+            <div class="aside-sub">Top quartile vs. $32B+ benchmark set</div>
+          </div>
+          <div class="aside-card">
+            <div class="aside-title">vs. Industry Avg</div>
+            <div class="aside-val" style="color:var(--green);">+$420M</div>
+            <div class="aside-sub">Vs. comparable oncology programs</div>
+          </div>
+          <div class="card accent-blue">
+            <div class="card-title">Sensitivity</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.5;">&plusmn;10% on POS &rarr; &plusmn;$186M eNPV. Greatest lever: Ph3 success rate and launch price assumption.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: COMPETITIVE LANDSCAPE -->
+  <div class="slide" id="slide-6" data-chapter="COMPETITIVE INTEL" data-duration="12">
+    <div class="slide-inner">
+      <div class="eyebrow">EGFR Inhibitor Space &mdash; Live Map</div>
+      <h2 class="slide-title">See where competitors are.<br>Before you commit.</h2>
+      <div class="bubble-wrap">
+        <div class="bubble-chart">
+          <div style="position:absolute;bottom:-2px;left:0;right:0;display:flex;justify-content:space-between;padding:0 20px;">
+            <span style="font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;">&larr; EARLIER STAGE</span>
+            <span style="font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.06em;">CLINICAL STAGE &rarr;</span>
+          </div>
+          <div class="bubble" style="width:90px;height:90px;left:12%;top:20%;background:rgba(79,142,247,0.12);">
+            <div class="bubble-label" style="color:var(--blue);">Osimertinib</div>
+            <span>AZ &middot; Ph3 &middot; $4.2B</span>
+          </div>
+          <div class="bubble" style="width:70px;height:70px;left:38%;top:10%;background:rgba(34,197,94,0.08);">
+            <div class="bubble-label" style="color:var(--green);">Lazertinib</div>
+            <span>JNJ &middot; Ph3 &middot; $2.1B</span>
+          </div>
+          <div class="bubble" style="width:55px;height:55px;left:60%;top:25%;background:rgba(245,158,11,0.08);">
+            <div class="bubble-label" style="color:var(--amber);font-size:9px;">Amivantamab</div>
+            <span>JNJ &middot; Ph2</span>
+          </div>
+          <div class="bubble" style="width:80px;height:80px;left:76%;top:12%;background:rgba(124,92,255,0.1);">
+            <div class="bubble-label" style="color:#7c5cff;">Furmonertinib</div>
+            <span>Elevai &middot; Ph3</span>
+          </div>
+          <div class="bubble" style="width:60px;height:60px;left:20%;top:52%;opacity:0.35;background:rgba(79,142,247,0.08);">
+            <div class="bubble-label" style="font-size:9px;">&#9608;&#9608;&#9608;&#9608;</div>
+            <span>&#9608;&#9608; &middot; Ph2</span>
+          </div>
+          <div class="bubble" style="width:75px;height:75px;left:48%;top:48%;opacity:0.35;background:rgba(239,68,68,0.08);">
+            <div class="bubble-label" style="font-size:9px;">&#9608;&#9608;&#9608;&#9608;</div>
+            <span>&#9608;&#9608; &middot; Ph1</span>
+          </div>
+          <div class="bubble" style="width:50px;height:50px;left:70%;top:55%;opacity:0.35;background:rgba(34,197,94,0.06);">
+            <div class="bubble-label" style="font-size:9px;">&#9608;&#9608;&#9608;</div>
+            <span>&#9608;&#9608; &middot; Ph1</span>
+          </div>
+        </div>
+        <div class="blur-tease">
+          <div class="tease-label">+23 compounds &middot; Full landscape in platform</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: COMPANY SCANNER -->
+  <div class="slide" id="slide-7" data-chapter="COMPANY SCANNER" data-duration="12">
+    <div class="slide-inner">
+      <div class="eyebrow">BD Intelligence Layer</div>
+      <h2 class="slide-title">Every competitor&rsquo;s pipeline.<br>Scored. Ranked. Explained.</h2>
+      <div class="scanner-wrap">
+        <div class="scanner-header">
+          <div class="company-badge">AstraZeneca</div>
+          <div class="scanner-title">Oncology Pipeline &mdash; Kinase Inhibitors</div>
+          <div class="scanner-sub">Updated 18 May 2026 &middot; 47 programs tracked</div>
+        </div>
+        <table class="scanner-table">
+          <thead>
+            <tr>
+              <th>Drug</th><th>Target</th><th>Phase</th><th>Indication</th><th>KI POS Score</th><th>Threat Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;color:#fff;">Osimertinib</td>
+              <td style="font-family:'JetBrains Mono',monospace;font-size:11px;">EGFR T790M</td>
+              <td><span class="pos-pill high">Ph 3</span></td>
+              <td>NSCLC</td>
+              <td style="font-family:'JetBrains Mono',monospace;color:var(--green);">91.3%</td>
+              <td><span class="pos-pill high">HIGH</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:#fff;">AZD5363</td>
+              <td style="font-family:'JetBrains Mono',monospace;font-size:11px;">AKT1/2/3</td>
+              <td><span class="pos-pill high">Ph 3</span></td>
+              <td>Breast Cancer</td>
+              <td style="font-family:'JetBrains Mono',monospace;color:var(--green);">78.4%</td>
+              <td><span class="pos-pill mid">MED</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:#fff;">Savolitinib</td>
+              <td style="font-family:'JetBrains Mono',monospace;font-size:11px;">MET</td>
+              <td><span class="pos-pill mid">Ph 2</span></td>
+              <td>RCC</td>
+              <td style="font-family:'JetBrains Mono',monospace;color:var(--amber);">62.1%</td>
+              <td><span class="pos-pill mid">MED</span></td>
+            </tr>
+            <tr style="filter:blur(4px);opacity:0.3;">
+              <td>&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</td><td>&#9608;&#9608;&#9608;&#9608;&#9608;</td><td>Ph 2</td><td>&#9608;&#9608;&#9608;&#9608;</td><td>&#9608;&#9608;.&#9608;%</td><td>&#9608;&#9608;&#9608;</td>
+            </tr>
+            <tr style="filter:blur(4px);opacity:0.2;">
+              <td>&#9608;&#9608;&#9608;&#9608;&#9608;</td><td>&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</td><td>Ph 1</td><td>&#9608;&#9608;&#9608;&#9608;&#9608;</td><td>&#9608;&#9608;.&#9608;%</td><td>&#9608;&#9608;&#9608;</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="scanner-blur">
+          <div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;">+44 programs &middot; Unlocked in platform</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: MODEL PROVENANCE -->
+  <div class="slide" id="slide-8" data-chapter="MODEL PROVENANCE" data-duration="12">
+    <div class="slide-inner">
+      <div class="eyebrow">Auditable AI &mdash; Not a Black Box</div>
+      <h2 class="slide-title">Every prediction is traceable.<br>Every number is defensible.</h2>
+      <div class="prov-layout">
+        <div class="prov-table-wrap">
+          <table class="prov-table">
+            <thead>
+              <tr><th>Validation Window</th><th>Training Set</th><th>Test Period</th><th>AUC-ROC</th><th>Precision</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--muted);">Window 1</td>
+                <td>2005&ndash;2018</td>
+                <td>2019&ndash;2020</td>
+                <td class="auc-val">0.79</td>
+                <td>0.74</td>
+              </tr>
+              <tr>
+                <td style="color:var(--muted);">Window 2</td>
+                <td>2005&ndash;2020</td>
+                <td>2021&ndash;2022</td>
+                <td class="auc-val">0.82</td>
+                <td>0.78</td>
+              </tr>
+              <tr>
+                <td style="color:var(--muted);">Window 3</td>
+                <td>2005&ndash;2022</td>
+                <td>2023&ndash;2024</td>
+                <td class="auc-val">0.82</td>
+                <td>0.79</td>
+              </tr>
+              <tr style="background:rgba(79,142,247,0.05);">
+                <td style="color:var(--blue);font-weight:700;">Mean</td>
+                <td colspan="2" style="color:var(--muted);">Temporal holdout &middot; no leakage</td>
+                <td class="auc-val" style="font-size:16px;">0.81</td>
+                <td style="font-weight:700;">0.77</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="prov-points">
+          <div class="prov-point">
+            <div class="prov-icon">&#128302;</div>
+            <div class="prov-text"><strong>Drug-level stratified K-fold splits</strong> prevent data leakage across trial phases &mdash; your CFO can audit it.</div>
+          </div>
+          <div class="prov-point">
+            <div class="prov-icon">&#128202;</div>
+            <div class="prov-text"><strong>129 proprietary features</strong> &mdash; trial design, biomarker maturity, endpoint rigour, competitive clock. No public benchmark can replicate this.</div>
+          </div>
+          <div class="prov-point">
+            <div class="prov-icon">&#9878;</div>
+            <div class="prov-text"><strong>Temporal holdout windows</strong> &mdash; model trained on past, validated on future. Real-world performance, not backtest artefacts.</div>
+          </div>
+          <div class="prov-point">
+            <div class="prov-icon">&#128269;</div>
+            <div class="prov-text"><strong>SHAP explainability</strong> on every prediction &mdash; see exactly which features drove each score. Board-ready transparency.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: INVESTOR HOOK -->
+  <div class="slide" id="slide-9" data-chapter="THE MOAT" data-duration="10">
+    <div class="slide-inner">
+      <div class="eyebrow">Why This Wins</div>
+      <h2 class="slide-title">The data moat.<br>The switching cost. The margin.</h2>
+      <div class="hook-stats">
+        <div class="hook-stat">
+          <div class="hook-num">0<span class="hook-unit">.81</span></div>
+          <div class="hook-lbl">AUC-ROC (audited)</div>
+        </div>
+        <div class="hook-stat accent">
+          <div class="hook-num">130<span class="hook-unit">%+</span></div>
+          <div class="hook-lbl">Net Revenue Retention</div>
+        </div>
+        <div class="hook-stat">
+          <div class="hook-num">129</div>
+          <div class="hook-lbl">Proprietary AI Features</div>
+        </div>
+      </div>
+      <div class="hook-line">
+        Every time a customer uses KIP, the model gets sharper. Every program entered expands the training set. <em>The platform learns. The moat deepens.</em>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: THE CLOSE -->
+  <div class="slide" id="slide-10" data-chapter="THE CLOSE" data-duration="10">
+    <div class="slide-inner close-center">
+      <div class="eyebrow" style="justify-content:center;">One Ask</div>
+      <h1 class="hero-title" style="font-size:clamp(36px,5vw,60px);">Give us one program.<br>Your most controversial<br><span style="color:var(--blue);">go / no-go.</span></h1>
+      <p class="slide-sub" style="margin:24px auto 36px;text-align:center;">We&rsquo;ll run it through KIP &mdash; live &mdash; and show you what the AI sees that your committee doesn&rsquo;t. No slides. No pitch. Just your data and our model.</p>
+      <a href="mailto:aniketh.yerra@gmail.com?subject=KIP Demo Request" class="close-btn">Request Private Demo &rarr;</a>
+      <div class="close-proof">
+        <div class="close-proof-item">AUC 0.81 validated</div>
+        <div class="close-proof-item">12,773 trials indexed</div>
+        <div class="close-proof-item">Results in 3 seconds</div>
+        <div class="close-proof-item">Fully auditable</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- #stage -->
+
+<!-- OUTRO -->
+<div id="outro">
+  <div class="outro-brand">Kairos Intelligence &middot; KIP</div>
+  <h2 class="outro-title">The Bloomberg Terminal<br>pharma has been <em>missing.</em></h2>
+  <p class="outro-sub">AUC 0.81. 129 proprietary features. Every go/no-go decision, scored and defended in 3 seconds.</p>
+  <div class="outro-stats">
+    <div class="outro-stat"><div class="n">0.81</div><div class="l">AUC-ROC</div></div>
+    <div class="outro-stat"><div class="n">12,773</div><div class="l">Trials Indexed</div></div>
+    <div class="outro-stat"><div class="n">129</div><div class="l">AI Features</div></div>
+    <div class="outro-stat"><div class="n">$1.24B</div><div class="l">Sample eNPV</div></div>
+  </div>
+  <a href="mailto:aniketh.yerra@gmail.com?subject=KIP Private Demo Request" class="outro-cta">Request Private Demo &rarr;</a>
+  <a href="index.html" class="outro-back">&larr; Back to Kairos Intelligence</a>
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const totalSlides = slides.length;
+  let current = 0;
+  let playing = true;
+  let elapsed = 0;
+  let lastTime = null;
+  let outroShown = false;
+
+  const dotsEl = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.title = 'Slide ' + (i + 1);
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function getDuration(idx) { return parseInt(slides[idx].dataset.duration || '10', 10); }
+  function getChapter(idx) { return slides[idx].dataset.chapter || ''; }
+
+  function goTo(idx) {
+    if (outroShown) return;
+    slides[current].classList.remove('active');
+    document.querySelectorAll('.dot')[current].classList.remove('active');
+    current = Math.max(0, Math.min(idx, totalSlides - 1));
+    slides[current].classList.add('active');
+    document.querySelectorAll('.dot')[current].classList.add('active');
+    document.getElementById('chapter-label').textContent = getChapter(current);
+    document.getElementById('slide-counter').textContent = (current + 1) + ' / ' + totalSlides;
+    elapsed = 0;
+    lastTime = null;
+    updateProgress();
+  }
+
+  function updateProgress() {
+    if (outroShown) return;
+    const dur = getDuration(current);
+    let totalDuration = 0;
+    slides.forEach((sl, i) => { totalDuration += getDuration(i); });
+    let doneTime = 0;
+    for (let i = 0; i < current; i++) doneTime += getDuration(i);
+    const pct = ((doneTime + Math.min(elapsed, dur)) / totalDuration) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('time-left').textContent = Math.ceil(Math.max(0, dur - elapsed)) + 's';
+  }
+
+  function showOutro() {
+    outroShown = true;
+    playing = false;
+    document.getElementById('outro').classList.add('visible');
+    document.getElementById('progress-bar').style.width = '100%';
+  }
+
+  function tick(ts) {
+    if (!lastTime) lastTime = ts;
+    const dt = (ts - lastTime) / 1000;
+    lastTime = ts;
+    if (playing && !outroShown) {
+      elapsed += dt;
+      updateProgress();
+      if (elapsed >= getDuration(current)) {
+        if (current < totalSlides - 1) goTo(current + 1);
+        else showOutro();
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  const btnPlay = document.getElementById('btn-play');
+  function togglePlay() {
+    if (outroShown) return;
+    playing = !playing;
+    if (playing) lastTime = null;
+    btnPlay.innerHTML = playing ? '&#10074;&#10074;' : '&#9654;';
+  }
+
+  btnPlay.addEventListener('click', togglePlay);
+  document.getElementById('btn-prev').addEventListener('click', () => { if (current > 0) goTo(current - 1); });
+  document.getElementById('btn-next').addEventListener('click', () => { if (current < totalSlides - 1) goTo(current + 1); else showOutro(); });
+  document.getElementById('slide-counter').addEventListener('click', togglePlay);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === ' ') { e.preventDefault(); togglePlay(); }
+    if (e.key === 'ArrowRight') { if (!outroShown && current < totalSlides - 1) goTo(current + 1); else if (!outroShown) showOutro(); }
+    if (e.key === 'ArrowLeft') { if (current > 0) goTo(current - 1); }
+  });
+
+  document.getElementById('chapter-label').textContent = getChapter(0);
+  updateProgress();
+</script>
+</body>
+</html>
