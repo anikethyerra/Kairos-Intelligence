@@ -213,21 +213,6 @@
     .proof-num { font-size: 50px; font-weight: 900; letter-spacing: -2.5px; background: linear-gradient(135deg, var(--blue), var(--blue-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .proof-lbl { font-size: 13.5px; color: var(--text-2); margin-top: 8px; line-height: 1.45; }
 
-    /* ── SUPPLY CHAIN ── */
-    .supply-split { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-    .supply-vis { background: var(--bg-card); border: 1px solid rgba(245,158,11,.12); border-radius: 16px; padding: 40px 36px; }
-    .supply-node { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: rgba(245,158,11,.05); border: 1px solid rgba(245,158,11,.1); border-radius: 8px; }
-    .sn-icon { width: 34px; height: 34px; flex-shrink: 0; background: rgba(245,158,11,.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
-    .sn-t { font-size: 13.5px; font-weight: 600; }
-    .sn-s { font-size: 11.5px; color: var(--text-3); margin-top: 2px; }
-    .supply-arrow { text-align: center; font-size: 16px; color: var(--text-3); padding: 4px 0; }
-    .supply-caps { display: flex; flex-direction: column; gap: 32px; }
-    .sc-item { display: flex; gap: 20px; }
-    .sc-icon { width: 44px; height: 44px; flex-shrink: 0; background: rgba(245,158,11,.09); border: 1px solid rgba(245,158,11,.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-    .sc-t { font-size: 16px; font-weight: 700; margin-bottom: 7px; }
-    .sc-d { font-size: 14px; color: var(--text-2); line-height: 1.65; }
-    .soon { display: inline-flex; align-items: center; gap: 5px; margin-top: 7px; font-size: 11px; font-weight: 600; color: var(--amber); }
-
     /* ── CTA ── */
     .cta-sec { background: linear-gradient(135deg, rgba(79,142,247,.07), rgba(124,92,255,.07)); border-top: 1px solid var(--border); }
     .cta-inner { text-align: center; max-width: 620px; margin: 0 auto; padding: 120px 28px; }
@@ -251,7 +236,7 @@
     @media (max-width: 960px) {
       nav { padding: 0 24px; }
       .nav-links { display: none; }
-      .split-intro-grid, .supply-split, .pos-mockup, .gen-mockup { grid-template-columns: 1fr; }
+      .split-intro-grid, .pos-mockup, .gen-mockup { grid-template-columns: 1fr; }
       .pos-sidebar, .gen-sidebar { display: none; }
       .mod-grid-blue, .mod-grid-teal { grid-template-columns: 1fr; }
       .proof-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
@@ -275,10 +260,10 @@
   <div class="nav-links">
     <a href="#innovative">Innovative Pharma</a>
     <a href="#generic">Generic Pharma</a>
-    <a href="#supply">Supply Chain</a>
     <span class="nav-sep">·</span>
     <a href="#proof">Proof</a>
-    <a href="demo-generic.html" target="_blank" class="nav-pill">▶ Watch Demo</a>
+    <a href="demo-innovative.html" target="_blank" class="nav-pill" style="margin-right:6px;">▶ KIP Demo</a>
+    <a href="demo-generic.html" target="_blank" class="nav-pill" style="background:rgba(0,212,170,.12);color:var(--teal)!important;border-color:rgba(0,212,170,.25);">▶ Generic Demo</a>
   </div>
   <a href="#contact" class="nav-cta">Get Access →</a>
 </nav>
@@ -291,7 +276,8 @@
   <div class="hero-btns">
     <a href="#innovative" class="btn-p">Innovative Pharma →</a>
     <a href="#generic" class="btn-teal">Generic Pharma →</a>
-    <a href="demo-generic.html" target="_blank" class="btn-ghost" style="display:inline-flex;align-items:center;gap:8px;">▶ Watch Demo</a>
+    <a href="demo-innovative.html" target="_blank" class="btn-ghost" style="display:inline-flex;align-items:center;gap:8px;">▶ KIP Demo</a>
+    <a href="demo-generic.html" target="_blank" class="btn-ghost" style="display:inline-flex;align-items:center;gap:8px;color:var(--teal);border-color:rgba(0,212,170,.25);">▶ Generic Demo</a>
   </div>
   <div class="hero-stats">
     <div class="hs"><div class="hs-num">12,<span>773</span></div><div class="hs-lbl">Clinical Trials Analyzed</div></div>
@@ -505,7 +491,7 @@
     </div>
 
     <div style="display:flex; gap:14px; margin-top:40px;" class="reveal">
-      <a href="#contact" class="btn-p">See Full KIP Demo →</a>
+      <a href="demo-innovative.html" target="_blank" class="btn-p">▶ Watch KIP Demo</a>
       <a href="#contact" class="btn-ghost">Talk to Our Team</a>
     </div>
   </div>
@@ -697,68 +683,14 @@
   </div>
 </section>
 
-<!-- ═══ SUPPLY CHAIN ═══ -->
-<section id="supply" class="sec">
-  <div class="wrap">
-    <div class="hdr reveal">
-      <div class="lbl lbl-amber">Expanding · Supply Chain Intelligence</div>
-      <h2 class="h2">The same decision engine —<br/>applied to <span style="color:var(--amber);">procurement.</span></h2>
-      <p class="sub">Pharma supply chains run on opacity. Supplier qualification takes months. RFx runs in email threads. Spend benchmarks don't exist. We're building the intelligence layer the industry doesn't yet have.</p>
-    </div>
-    <div class="supply-split">
-      <div class="supply-caps reveal">
-        <div class="sc-item">
-          <div class="sc-icon">🔎</div>
-          <div>
-            <div class="sc-t">Supplier Discovery &amp; Qualification</div>
-            <div class="sc-d">FDA warning history, DMF status, GMP compliance records — aggregated into a ranked supplier shortlist. What used to take 40 cold calls now takes one query.</div>
-            <span class="soon">⬡ In Development · 2026</span>
-          </div>
-        </div>
-        <div class="sc-item">
-          <div class="sc-icon">📋</div>
-          <div>
-            <div class="sc-t">RFx Automation &amp; Spend Intelligence</div>
-            <div class="sc-d">Structured evaluation frameworks, AI-assisted scoring, and spend benchmarking. Turn a 3-month sourcing cycle into a 3-week decision backed by market data, not relationship memory.</div>
-            <span class="soon">⬡ In Development · 2026</span>
-          </div>
-        </div>
-        <div class="sc-item">
-          <div class="sc-icon">⚖️</div>
-          <div>
-            <div class="sc-t">Risk-Adjusted Total Cost of Ownership</div>
-            <div class="sc-d">Supplier concentration risk, geopolitical sourcing exposure, make-vs-buy modeling — quantified. The same eNPV architecture applied to procurement decisions that move $100M+.</div>
-            <span class="soon">⬡ Roadmap · H2 2026</span>
-          </div>
-        </div>
-      </div>
-      <div class="supply-vis reveal">
-        <div style="margin-bottom:24px;">
-          <div class="lbl lbl-amber" style="margin-bottom:8px;">The procurement gap</div>
-          <div style="font-size:13.5px;color:var(--text-2);line-height:1.65;">$40B+ is lost annually to suboptimal pharma sourcing decisions. The intelligence layer has been missing. Until now.</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div class="supply-node"><div class="sn-icon">🏗️</div><div><div class="sn-t">API Supplier Network</div><div class="sn-s">FDA DMF · GMP records · Warning letters · ANDA history</div></div></div>
-          <div class="supply-arrow">↓</div>
-          <div class="supply-node"><div class="sn-icon">⚖️</div><div><div class="sn-t">Risk-Adjusted Scoring Engine</div><div class="sn-s">Quality · Compliance · Concentration risk · Price benchmarks</div></div></div>
-          <div class="supply-arrow">↓</div>
-          <div class="supply-node"><div class="sn-icon">📋</div><div><div class="sn-t">RFx Automation Layer</div><div class="sn-s">Structured evaluation · AI scoring · Cycle time reduction</div></div></div>
-          <div class="supply-arrow">↓</div>
-          <div class="supply-node" style="border-color:rgba(245,158,11,.3);"><div class="sn-icon">✅</div><div><div class="sn-t">Procurement Decision Output</div><div class="sn-s">Ranked suppliers · TCO model · Risk report · Audit trail</div></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══ CTA ═══ -->
 <section class="cta-sec" id="contact">
   <div class="cta-inner reveal">
     <h2>Ready to see a <span class="grad-blue">live demo?</span></h2>
     <p>Bring a drug your team is actively evaluating. We'll walk through the POS, the competitive landscape, and the ANDA opportunity — in under 20 minutes.</p>
     <div class="cta-btns">
-      <a href="mailto:contact@kairosintelligence.ai" class="btn-p">Request Demo →</a>
-      <a href="mailto:contact@kairosintelligence.ai" class="btn-ghost">Talk to the Team</a>
+      <a href="mailto:aniketh.yerra@gmail.com" class="btn-p">Request Demo →</a>
+      <a href="mailto:aniketh.yerra@gmail.com" class="btn-ghost">Talk to the Team</a>
     </div>
     <div class="cta-note">For innovative pharma, generic BD teams, and PE investors. No commitment required.</div>
   </div>
@@ -787,10 +719,11 @@
     </div>
     <div class="fc">
       <div class="fc-title">Company</div>
-      <a href="#supply">Supply Chain (2026)</a>
+      <a href="demo-innovative.html" target="_blank">KIP Platform Demo</a>
+      <a href="demo-generic.html" target="_blank">Generic Platform Demo</a>
       <a href="#proof">Validated Performance</a>
       <a href="#contact">Request Demo</a>
-      <a href="mailto:contact@kairosintelligence.ai">Contact</a>
+      <a href="mailto:aniketh.yerra@gmail.com">Contact</a>
     </div>
   </div>
   <div class="footer-bottom">
