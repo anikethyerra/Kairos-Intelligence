@@ -270,6 +270,41 @@
       .problem-grid { grid-template-columns: 1fr; }
       .outcome-row { flex-direction: column; gap: 24px; }
     }
+
+    /* PIPELINE RADAR PROOF BLOCK */
+    .rp-block { background: rgba(79,142,247,0.03); border: 1px solid rgba(79,142,247,0.22); border-radius: 16px; padding: 40px; margin-bottom: 64px; position: relative; overflow: hidden; }
+    .rp-block::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--blue),var(--blue-2)); }
+    .rp-live-row { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+    .rp-live-dot { width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 10px var(--green); animation:pulse 2s infinite; flex-shrink:0; }
+    .rp-live-label { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--green); }
+    .rp-title { font-size:clamp(22px,3vw,34px); font-weight:800; letter-spacing:-1px; color:#fff; margin-bottom:12px; line-height:1.15; }
+    .rp-sub { font-size:15px; color:var(--text-2); line-height:1.65; max-width:700px; margin-bottom:32px; }
+    .rp-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:28px; }
+    .rp-stat { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:20px 22px; }
+    .rp-stat-n { font-size:36px; font-weight:900; letter-spacing:-1.5px; color:var(--blue); margin-bottom:6px; }
+    .rp-stat-l { font-size:12px; color:var(--text-2); line-height:1.45; }
+    .radar-table { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+    .rt-header { display:grid; grid-template-columns:2.2fr 1fr 1fr 1.4fr 0.8fr; padding:10px 16px; border-bottom:1px solid var(--border); background:rgba(255,255,255,.02); }
+    .rt-th { font-size:10px; color:var(--text-3); font-weight:700; letter-spacing:.8px; text-transform:uppercase; }
+    .rt-row { display:grid; grid-template-columns:2.2fr 1fr 1fr 1.4fr 0.8fr; padding:13px 16px; border-bottom:1px solid rgba(255,255,255,.04); align-items:center; transition:background .2s; }
+    .rt-row:hover { background:rgba(79,142,247,.04); }
+    .rt-row:last-child { border-bottom:none; }
+    .rt-pname { font-size:12.5px; font-weight:600; color:var(--text); margin-bottom:2px; }
+    .rt-psub { font-size:10.5px; color:var(--text-3); }
+    .rt-badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:10px; font-weight:700; letter-spacing:.5px; font-family:'JetBrains Mono',monospace; }
+    .rb-proceed { background:rgba(34,197,94,.12); color:var(--green); border:1px solid rgba(34,197,94,.25); }
+    .rb-reconsider { background:rgba(239,68,68,.12); color:var(--red); border:1px solid rgba(239,68,68,.25); }
+    .rb-review { background:rgba(245,158,11,.12); color:var(--amber); border:1px solid rgba(245,158,11,.25); }
+    .rt-date { font-size:11px; color:var(--text-3); font-family:'JetBrains Mono',monospace; }
+    .rt-outcome { font-size:11.5px; font-weight:600; }
+    .ro-confirmed { color:var(--green); }
+    .ro-miss { color:var(--red); }
+    .ro-pending { color:var(--text-3); font-style:italic; }
+    .rt-lead { font-size:12px; font-weight:700; color:var(--blue); font-family:'JetBrains Mono',monospace; }
+    .rp-footer { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-top:22px; padding-top:22px; border-top:1px solid var(--border); }
+    .rp-footer-note { font-size:11.5px; color:var(--text-3); max-width:520px; line-height:1.5; }
+    .rp-footer-cta { font-size:13px; font-weight:600; color:var(--blue); text-decoration:none; white-space:nowrap; border:1px solid rgba(79,142,247,.3); padding:8px 18px; border-radius:7px; transition:background .2s; }
+    .rp-footer-cta:hover { background:rgba(79,142,247,.1); }
   </style>
 </head>
 <body>
@@ -368,12 +403,63 @@
   <div class="wrap">
     <div class="hdr reveal">
       <div class="lbl">Kairos Clinical &mdash; Innovative Pharma</div>
-      <h2 class="h2">Stop defending programs<br/>on instinct. <span class="grad-blue">Defend them on data.</span></h2>
-      <p class="sub">Phase 3 failures cost $300M&ndash;$1B each. Most were predictable. Kairos Clinical gives portfolio teams a scored recommendation &mdash; PROCEED, REVIEW, or RECONSIDER &mdash; before the capital is committed.</p>
+      <h2 class="h2">We called it before<br/>the data was in. <span class="grad-blue">You can verify.</span></h2>
+      <p class="sub">Kinase oncology is where we started — and where the platform has the deepest track record. We have been scoring active trials for over 18 months. Every prediction is timestamped. Every resolved outcome is independently verifiable on ClinicalTrials.gov.</p>
     </div>
 
-    <div class="hdr reveal" style="margin-bottom:28px;margin-top:0;">
-      <div class="lbl">Platform Capabilities</div>
+    <!-- PIPELINE RADAR PROOF BLOCK -->
+    <div class="rp-block reveal">
+      <div class="rp-live-row">
+        <div class="rp-live-dot"></div>
+        <div class="rp-live-label">Pipeline Radar &mdash; Live Prediction Engine</div>
+      </div>
+      <div class="rp-title">Every active trial. Scored. Timestamped. Verifiable.</div>
+      <p class="rp-sub">Pipeline Radar continuously pulls every active kinase oncology trial from public clinical databases. Each trial is scored the moment it enters a recruiting state &mdash; before any outcome is known. Predictions are stored with timestamps. As trials resolve, accuracy is measured automatically against the public record. We did not choose which trials to predict. We predicted all of them.</p>
+
+      <div class="rp-stats">
+        <div class="rp-stat">
+          <div class="rp-stat-n" style="font-size:22px;letter-spacing:-0.5px;margin-bottom:10px;color:var(--text);">All recruiting trials</div>
+          <div class="rp-stat-l">Every kinase oncology trial entering a recruiting state is scored automatically &mdash; not a curated subset, not retrospective selection. The model sees them first.</div>
+        </div>
+        <div class="rp-stat">
+          <div class="rp-stat-n" style="font-size:22px;letter-spacing:-0.5px;margin-bottom:10px;color:var(--text);">12&ndash;24 months ahead</div>
+          <div class="rp-stat-l">A Phase 2 kinase trial typically takes 18&ndash;24 months to resolve. The platform&rsquo;s prediction is on record well before the outcome is public. The lead time is structural, not cherry-picked.</div>
+        </div>
+        <div class="rp-stat">
+          <div class="rp-stat-n" style="font-size:22px;letter-spacing:-0.5px;margin-bottom:10px;color:var(--text);">Independently verifiable</div>
+          <div class="rp-stat-l">Every resolved outcome is checkable on ClinicalTrials.gov. We do not ask you to trust the model. We ask you to bring a trial ID to the demo and we will show you what we said about it &mdash; before the outcome was known.</div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:28px 32px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:16px;">How Validation Works</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+          <div style="padding:18px 20px;border-right:1px solid var(--border);">
+            <div style="font-size:11px;color:var(--text-3);font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px;">01 &mdash; Score</div>
+            <div style="font-size:13px;color:var(--text-2);line-height:1.55;">Trial enters recruiting state on ClinicalTrials.gov. Platform scores it and stores the prediction with a timestamp. No human involvement.</div>
+          </div>
+          <div style="padding:18px 20px;border-right:1px solid var(--border);">
+            <div style="font-size:11px;color:var(--text-3);font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px;">02 &mdash; Wait</div>
+            <div style="font-size:13px;color:var(--text-2);line-height:1.55;">Trial runs. Platform continues tracking status. Prediction sits on record, unchanged, for the duration of the trial &mdash; typically 12&ndash;24 months.</div>
+          </div>
+          <div style="padding:18px 20px;">
+            <div style="font-size:11px;color:var(--text-3);font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px;">03 &mdash; Verify</div>
+            <div style="font-size:13px;color:var(--text-2);line-height:1.55;">Trial completes or terminates. Outcome is pulled from the public record. Prediction is scored against the result. You can check the NCT ID yourself.</div>
+          </div>
+        </div>
+        <div style="margin-top:18px;padding:14px 18px;background:rgba(79,142,247,0.06);border:1px solid rgba(79,142,247,0.15);border-radius:8px;font-size:13px;color:var(--text-2);line-height:1.6;">
+          <span style="color:var(--blue);font-weight:700;">In a live session:</span> We open the platform and show you every prediction currently on record &mdash; scored trials, timestamps, and outcomes for those that have resolved. Bring your own trial IDs if you want. We will show you what the model said before the data was in.
+        </div>
+      </div>
+
+      <div class="rp-footer">
+        <div class="rp-footer-note">Full prediction log with NCT trial IDs, timestamped reports, and complete accuracy across resolved trials is available in a live session or under NDA for enterprise evaluation.</div>
+        <a href="#contact" class="rp-footer-cta">Request Live Validation Session &rarr;</a>
+      </div>
+    </div>
+
+        <div class="hdr reveal" style="margin-bottom:28px;margin-top:0;">
+      <div class="lbl">The Engine Behind the Predictions</div>
     </div>
     <div class="cap-grid reveal" style="margin-bottom:32px;">
       <div class="cap-cell">
@@ -406,11 +492,11 @@
         <div class="cap-d">Score the strength of a biomarker strategy. Companion diagnostic requirements, patient selection specificity, and genetic association evidence &mdash; auto-assessed from eligibility criteria.</div>
         <span class="cap-badge cb-purple">Precision Signal</span>
       </div>
-      <div class="cap-cell">
+      <div class="cap-cell" style="border-color:rgba(34,197,94,0.3);background:rgba(34,197,94,0.03);">
         <div class="cap-n">06 &middot; LIVE INTELLIGENCE</div>
-        <div class="cap-t">Pipeline Radar</div>
-        <div class="cap-d">Track active programs in the competitive space in real time. Forward-looking success predictions on recruiting trials. Retrospective validation on resolved programs. The competitive read that used to take weeks.</div>
-        <span class="cap-badge cb-green">Live &middot; Validated</span>
+        <div class="cap-t">Pipeline Radar <span style="font-size:10px;color:var(--green);font-weight:600;margin-left:6px;">&#9679; LIVE</span></div>
+        <div class="cap-d">The same engine that produced the track record above — applied to the competitive space around your program. Every active trial in your indication, scored in real time. Know what your competitors are running, and what we think will happen to them, before they know it themselves.</div>
+        <span class="cap-badge cb-green">Verified Track Record</span>
       </div>
       <div class="cap-cell">
         <div class="cap-n">07 &middot; COMPETITIVE INTEL</div>
@@ -473,7 +559,7 @@
               <div class="pos-card">
                 <div class="pc-label">Risk-Adjusted Value</div>
                 <div class="pc-value" style="color:var(--blue);">$1.24B</div>
-                <div class="pc-sub">eNPV &middot; 10% discount rate</div>
+                <div class="pc-sub">Risk-adjusted portfolio value</div>
                 <div class="pc-bar"><div class="pc-bar-fill" style="width:72%;background:var(--blue);"></div></div>
               </div>
               <div class="pos-card">
@@ -507,7 +593,7 @@
                   <div style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-bottom:6px;">Key Signals</div>
                   <div style="display:flex;flex-direction:column;gap:5px;">
                     <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-2);"><span style="color:var(--amber);">&#9888;</span> Crowded indication &mdash; 12 active programs</div>
-                    <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-2);"><span style="color:var(--green);">&#10003;</span> Strong genetic evidence (Open Targets confirmed)</div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-2);"><span style="color:var(--green);">&#10003;</span> Strong genetic target evidence (public databases)</div>
                     <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--text-2);"><span style="color:var(--green);">&#10003;</span> Validated biomarker strategy with companion Dx</div>
                   </div>
                 </div>
@@ -549,8 +635,9 @@
       </div>
     </div>
 
-    <div style="display:flex;gap:14px;margin-top:40px;" class="reveal">
-      <a href="demo-innovative.html" target="_blank" class="btn-p">&#9654; Watch Kairos Clinical Demo</a>
+    <div style="display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;" class="reveal">
+      <a href="#contact" class="btn-p">Request Full Track Record &rarr;</a>
+      <a href="demo-innovative.html" target="_blank" class="btn-ghost">&#9654; See Platform Demo</a>
       <a href="#contact" class="btn-ghost">Talk to Our Team</a>
     </div>
   </div>
